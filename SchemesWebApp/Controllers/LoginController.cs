@@ -1,9 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Schemes.Manager;
+using Schemes.Repository;
+using Schemes.ViewModels;
+using static Schemes.ViewModels.Enums;
 
 namespace SchemesWebApp.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly SchemesContext _dbContext;
+        public LoginController(LoginManager loginManager, SchemesContext DbContext)
+        {
+            _dbContext = DbContext;
+
+
+        }
         public IActionResult Login()
         {
             return View();
@@ -14,13 +26,9 @@ namespace SchemesWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                int employeeId = _accountService.GetEmployeeLogin(EmailId, password);
-                if (employeeId != 0)
+                int CustomerId = new LoginManager(_dbContext).GetCustomerLogin(EmailId, password);
+                if (CustomerId != 0)
                 {
-                    HttpContext.Session.SetString("EmpID", employeeId.ToString());
-                    SessionUser user = new SessionUser();
-                    user.Id = employeeId;
-                    createSession.SetSession(user, "SessionUser");
                     return RedirectToAction("HomePage", "Home");
                 }
                 else
@@ -31,16 +39,16 @@ namespace SchemesWebApp.Controllers
             }
             return BadRequest();
         }
-        public IActionResult EmployeeRegistration()
+        public IActionResult CustomerRegistration()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EmployeeRegistration(RegistrationViewModel registrationViewModel)
+        public IActionResult CustomerRegistration(RegistrationViewModel registrationViewModel)
         {
-            _accountService.EmployeeRegistration(registrationViewModel);
-            return RedirectToAction("Login", "Account");
+            new LoginManager(_dbContext).CustomerRegistration(registrationViewModel);
+            return RedirectToAction("Login", "Login");
 
         }
 
@@ -49,8 +57,8 @@ namespace SchemesWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var OTPType = OTPtypeEnum.Registration;
-                _accountService.SendOTP(emailId, OTPType);
+                var OTPType = OTPtypeEnum.RegistrationThroughEmail;
+                new LoginManager(_dbContext).SendOTP(emailId, OTPType);
                 return Ok();
             }
             return BadRequest();
@@ -65,8 +73,8 @@ namespace SchemesWebApp.Controllers
         public IActionResult ForgotPassword(RegistrationViewModel registrationViewModel)
         {
 
-            _accountService.UpdatePassword(registrationViewModel);
-            return RedirectToAction("Login", "Account");
+            new LoginManager(_dbContext).UpdatePassword(registrationViewModel);
+            return RedirectToAction("Login", "Login");
         }
 
         [HttpPost]
@@ -75,10 +83,10 @@ namespace SchemesWebApp.Controllers
 
             var OTP = OTPtypeEnum.ForgotYourPassword;
             ///checkMail
-            var res = _accountService.CheckEmailForPasswordChange(emailId);
+            var res = new LoginManager(_dbContext).CheckEmailForPasswordChange(emailId);
             if (res != false)
             {
-                _accountService.SendOTP(emailId, OTP);
+                new LoginManager(_dbContext).SendOTP(emailId, OTP);
                 return Ok();
             }
             else
@@ -90,13 +98,13 @@ namespace SchemesWebApp.Controllers
         [HttpPost]
         public IActionResult VerifyOTP(string emailId, string OTP)
         {
-            var IsOTPVerified = _accountService.VerifyOTP(emailId, OTP);
+            var IsOTPVerified = new LoginManager(_dbContext).VerifyOTP(emailId, OTP);
             return Json(IsOTPVerified);
         }
         [HttpPost]
         public IActionResult UpdateNewPassword(RegistrationViewModel registrationViewModel)
         {
-            _accountService.UpdatePassword(registrationViewModel);
+            new LoginManager(_dbContext).UpdatePassword(registrationViewModel);
             return View("Updated");///
         }
 
@@ -104,7 +112,7 @@ namespace SchemesWebApp.Controllers
         {
             try
             {
-                createSession.SetSession(new SessionUser(), "SessionUser");
+                //createSession.SetSession(new SessionUser(), "SessionUser");
                 return RedirectToAction("Login");
             }
             catch (Exception ex)

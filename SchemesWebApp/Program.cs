@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using Schemes.Manager;
+using Schemes.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<SchemesContext>();
+builder.Services.AddScoped<LoginManager>();
 
 var app = builder.Build();
 

@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Schemes.Manager;
+using Schemes.Repository;
 using SchemesWebApp.Models;
 using System.Diagnostics;
 
@@ -7,26 +11,55 @@ namespace SchemesWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SchemesContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(LoginManager loginManager, SchemesContext DbContext,ILogger<HomeController> logger)
         {
             _logger = logger;
+            _dbContext = DbContext;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult Privacy()
+       
+        
+        public IActionResult GetAllEmployees()
         {
-            return View();
+            try
+            {
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult HomePage()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            try
+            {
+               
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public IActionResult GetSchemesList(string name)
+        {
+            try
+            {
+                var list = new CustomerManager(_dbContext).GetSchemesList(name);
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
