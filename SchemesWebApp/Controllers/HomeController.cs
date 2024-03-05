@@ -25,18 +25,6 @@ namespace SchemesWebApp.Controllers
         }
        
         
-        public IActionResult GetAllEmployees()
-        {
-            try
-            {
-                
-                return View();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
         public IActionResult HomePage()
         {
             try
@@ -54,7 +42,7 @@ namespace SchemesWebApp.Controllers
             try
             {
                 var list = new CustomerManager(_dbContext).GetSchemesList(name);
-                return Ok(list);
+                return View("_GetSchemesList.cshtml",list);
             }
             catch (Exception ex)
             {

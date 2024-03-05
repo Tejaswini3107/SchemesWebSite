@@ -19,6 +19,6 @@ namespace Schemes.Models
         public string? Area {  get; set; }
         public string? DocumentsRequired { get; set; }
         public string? ApplyAndLink {  get; set; }
-        public bool? IsActive {  get; set; }
+        public bool IsActive {  get; set; }
     }
 }

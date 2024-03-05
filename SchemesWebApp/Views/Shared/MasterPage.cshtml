@@ -90,9 +90,9 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" id="schemeName">Pending</a>
-                        <a class="collapse-item" id="schemeName">Approved</a>
-                        <a class="collapse-item"  id="schemeName">Rejected </a>
+                        <a class="collapse-item" id="schemeName">Farmers</a>
+                        <a class="collapse-item" id="schemeName">Students</a>
+                        <a class="collapse-item"  id="schemeName">Backward Caste</a>
                     </div>
                 </div>
 
@@ -331,46 +331,7 @@
 
                     </ul>
                 </nav>
-                <div id="disable" hidden>
-                    <table id="tblprofiledetails" class="table table-bordered ">
-                        <thead>
-                            <tr>
-                                <td><b>EmployeeId</b></td>
-                                <td id="empId"></td>
-                            </tr>
-                            <tr>
-                                <td><b>FirstName</b></td>
-                                <td id="firstName"></td>
-                            </tr>
-                            <tr>
-                                <td><b>LastName</b></td>
-                                <td id="lastName"></td>
-                            </tr>
-                            <tr>
-                                <td><b>Email</b></td>
-                                <td id="email"></td>
-                            </tr>
-                            <tr>
-                                <td><b>PhoneNo</b></td>
-                                <td id="phno"></td>
-                            </tr>
-                            <tr>
-                                <td><b>DOB</b></td>
-                                <td id="dob"></td>
-                            </tr>
-                            <tr>
-                                <td><b>Joining Date</b></td>
-                                <td id="joiningDate"></td>
-                            </tr>
-                            <tr>
-                                <td><b>DeptID</b></td>
-                                <td id="depId"></td>
-                            </tr>
-                        </thead>
-
-                    </table>
-                </div>
-                <!-- End of Topbar -->
+              
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     @RenderBody()
@@ -416,7 +377,23 @@
     </div>
 
     <script type="text/javascript">
-      
+        $(document).ready(function () {
+            $("#schemeName").on('click', function () {
+                $.ajax({
+                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html(),
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "Json",
+
+                    success: function (data) {
+                       
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            });
+        });
       
 
     </script>

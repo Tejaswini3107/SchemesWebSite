@@ -83,10 +83,7 @@
                 </div>
             </div>
         </a>
-        <div class="schemesList dropdown-menu dropdown-menu-right shadow"
-             aria-labelledby="userDropdown">
-           
-        </div>
+
     </div>
 
     <!-- Pending Requests Card Example -->
@@ -118,26 +115,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#schemeName").on('click', function () {
-            $.ajax({
-                url: "/Home/GetSchemesList?name=" + $("#schemeName").html(),
-                type: "GET",
-                data: @Model,
-                contentType: "application/json; charset=utf-8",
-                dataType: "Json",
-
-                success: function (data) {
-                    if (data != null) {
-                        var model=data;
-    @Html.RenderPartial("_GetSchemesList.cshtml", model);
-                    }
-                    $(".schemesList").html(@Html.RenderPartial("_GetSchemesList.cshtml", data));
-                },
-                error: function (err) {
-                    alert(err);
-                }
-            });
-        });
+        
     })
 </script>
 

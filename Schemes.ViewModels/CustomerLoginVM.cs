@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static Schemes.ViewModels.Enums;
 
 namespace Schemes.ViewModels
 {
@@ -58,12 +59,12 @@ namespace Schemes.ViewModels
         public string EmailId { get; set; }
         public string PhoneNo { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public int CustomerStatus { get; set; }
+        public CustomerStatus CustomerStatus { get; set; }
     }
 
     public class SchemeDetails
     {
-        public int SchemesDetailID { get; set; }
+        public int? SchemesDetailID { get; set; }
         public string? NameOftheScheme { get; set; }
         public string? Description { get; set; }
         public string? EligibilityCriteria { get; set; }
@@ -72,6 +73,7 @@ namespace Schemes.ViewModels
         public string? DocumentsRequired { get; set; }
         public string? ApplyAndLink { get; set; }
         public bool? IsActive { get; set; }
+        public string? AvailableFor { get; set; }
 
     }
     public class RegistrationViewModel
