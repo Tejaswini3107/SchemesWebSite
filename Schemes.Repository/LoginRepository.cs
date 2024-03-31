@@ -4,6 +4,8 @@ using Schemes.Models;
 using System.Net.Mail;
 using System.Net;
 using static Schemes.ViewModels.Enums;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Schemes.Repository
 {
@@ -34,12 +36,12 @@ namespace Schemes.Repository
 
         }
 
-        public string AddOTP(string EmailId,OTPtypeEnum OTPType, string PhoneNumber="")
+        public string AddOTP(string? EmailId,OTPtypeEnum OTPType, string PhoneNumber="")
         {
             Models.OTPDetails oTPDetails = new Models.OTPDetails();
             string VerificationCode = "";
 
-
+            bool result = false;
             try
             {
                 string[] saAllowedCharacters = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
@@ -48,19 +50,27 @@ namespace Schemes.Repository
                 {
                     oTPDetails.SentDetails = EmailId;
                     oTPDetails.OTPType = (int)OTPtypeEnum.RegistrationThroughEmail;
+                    oTPDetails.OTP = VerificationCode;
+                    result = SendEmailToUser(EmailId, VerificationCode);
 
                 }
                 if (!string.IsNullOrEmpty(PhoneNumber))
                 {
                     oTPDetails.SentDetails = PhoneNumber;
+                    oTPDetails.OTP = VerificationCode;
                     oTPDetails.OTPType = (int)OTPtypeEnum.RegistrationThroughPhone;
-
+                    List<SMSDetails> sMSDetails = new List<SMSDetails>();
+                    sMSDetails.Add(new SMSDetails()
+                    {
+                        phone_number = PhoneNumber,
+                        text_message = $"Your OTP code is: {VerificationCode}"
+                    });
+                    result = SendOTPAsync(sMSDetails);
                 }
                 oTPDetails.InsertedBy = "Customer";
                 oTPDetails.InsertedDate = DateTime.Now;
                 oTPDetails.IsVerified = false;
                
-               bool result= SendEmailToUser(EmailId, VerificationCode);
                 if (result)
                 {
                     oTPDetails.OtpStatus = (int)OtpStatus.Sent;
@@ -109,24 +119,21 @@ namespace Schemes.Repository
             _dbContext.SaveChanges();
         }
 
-        public bool VerifyOTP(string emailID, string OTP)
+        public bool VerifyOTP(string emailOrPhNumber, string OTP)
         {
             bool isOTPVerified = false;
             try
             {
-                var identityVerificationDetails = _dbContext.OTPDetails.Where(s => s.SentDetails.Equals(emailID)).OrderByDescending(e => e.InsertedDate).First();
+                var identityVerificationDetails = _dbContext.OTPDetails.Where(s => s.SentDetails.Equals(emailOrPhNumber) &&s.OTP.Equals(OTP) &&s.IsVerified==false).OrderByDescending(e => e.InsertedDate).FirstOrDefault();
                 if (identityVerificationDetails != null)
                 {
-                    if (!string.IsNullOrEmpty(OTP))
-                    {
 
-                            identityVerificationDetails.IsVerified = true;
-                            identityVerificationDetails.OtpStatus = (int)OtpStatus.Success;
-                            identityVerificationDetails.UpdatedBy = emailID;
-                            identityVerificationDetails.UpdatedDate = DateTime.Now;
-                            _dbContext.SaveChanges();
-                            isOTPVerified = true;
-                    }
+                    identityVerificationDetails.IsVerified = true;
+                    identityVerificationDetails.OtpStatus = (int)OtpStatus.Success;
+                    identityVerificationDetails.UpdatedBy = emailOrPhNumber;
+                    identityVerificationDetails.UpdatedDate = DateTime.Now;
+                    _dbContext.SaveChanges();
+                    isOTPVerified = true;
                 }
             }
             catch (Exception)
@@ -196,5 +203,36 @@ namespace Schemes.Repository
             }
             return false;
         }
+        public bool SendOTPAsync(List<SMSDetails> sMSDetails)
+        {
+            string url = "https://bitmomegle.xyz/api/insert.php";
+
+            // JSON data to be sent in the POST request
+
+            string jsonData = JsonConvert.SerializeObject(sMSDetails);
+
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                HttpResponseMessage response =  client.PostAsync(url, content).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result =  response.Content.ReadAsStringAsync().Result;
+                    var resp = JsonConvert.DeserializeObject<Response>(result);
+                    if (resp.status.ToLower().Contains("success"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+    }
+    public class Response
+    {
+        public string status { get; set; }
+        public string message { get; set; }
     }
 }

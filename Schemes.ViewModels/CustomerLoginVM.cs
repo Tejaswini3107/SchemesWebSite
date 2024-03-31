@@ -98,4 +98,20 @@ namespace Schemes.ViewModels
 
 
     }
+
+    public class SMSDetails
+    {
+        public string phone_number { get; set; }
+        public string text_message { get; set; }
+    }
+    public class LoanDetails
+    {
+        public string BankName { get; set; }
+        public string LoanType { get; set; }
+        public string MinLoanAmount { get; set; }
+        public string MaxloanAmount { get; set; }
+        public string MinInterestRate { get; set; }
+        public string MaxInterestRate { get; set; }
+
+    }
 }

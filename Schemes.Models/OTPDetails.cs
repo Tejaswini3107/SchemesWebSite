@@ -12,6 +12,7 @@ namespace Schemes.Models
         [Key]
         public int OTPDetailsId { get; set; }
         public string SentDetails {  get; set; }
+        public string OTP {  get; set; }
         public int OTPType { get; set;}
         public int OtpStatus { get; set;}
         public bool IsVerified { get; set;}

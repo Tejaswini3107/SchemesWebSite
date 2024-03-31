@@ -49,67 +49,26 @@
                 <a class="nav-link" href="~/Home/HomePage" style="color:white"><i class="fas fa-fw fa-tachometer-alt"></i><span>Home</span></a>
             </li>
             <!-- Nav Item - Tables -->
-            @if (ViewBag.Msg == "HR")
-            {
-                <li class="nav-item" id="EmpShow">
-                    <a class="nav-link" href="~/Home/GetAllEmployees">
-                        <i class="fa fa-users"></i>
-                        <span>Employee's</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="UploadDocument">
-                    <a class="nav-link" href="~/Home/UploadDocument">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Upload Document</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="UploadPayslip">
-                    <a class="nav-link" href="~/Home/UploadPaySlip">
-                        <i class="fa fa-reply-all"></i>
-                        <span>Upload PaySlip</span>
-                    </a>
-                </li>
-                <li class="nav-item" id="GetAllEmployeesPaySlips">
-                    <a class="nav-link" href="~/Home/GetAllEmployeesPaySlips">
-                        <i class='fas fa-file-export'></i>
-                        <span>All Employees Payslips</span>
-                    </a>
-                </li>
-
-            }
-
-           
 
             <li class="nav-item">
                 <a class="nav-link collapsed" id="Schemes" href="#" data-toggle="collapse" data-target="#collapseUtilities2"
                    aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Schemes</span>
+                    <span> Government Schemes</span>
                 </a>
                 <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" id="schemeName">Farmers</a>
-                        <a class="collapse-item" id="schemeName">Students</a>
-                        <a class="collapse-item"  id="schemeName">Backward Caste</a>
+                        <a class="collapse-item" href="/Home/GetSchemesList?name=Farmers">Farmers</a>
+                        <a class="collapse-item" href="/Home/GetSchemesList?name=Students">Students</a>
+                        <a class="collapse-item" href="/Home/GetSchemesList?name=Backward Caste">Backward Caste</a>
                     </div>
                 </div>
 
             </li>
 
-            <li class="nav-item" id="EmployeeDailyTracker">
-                <a class="nav-link" href="~/Home/EmployeeDailyTracker">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Employee Daily Tracker</span>
-                </a>
-            </li>
-            <li class="nav-item" id="ApplyLeave">
-                <a class="nav-link" href="~/Home/ApplyLeave">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Apply Leave</span>
-                </a>
-            </li>
+            
             
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block"></hr>
@@ -133,17 +92,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                   aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                   
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -184,7 +133,7 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Banks
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
@@ -331,9 +280,7 @@
 
                     </ul>
                 </nav>
-              
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container">
                     @RenderBody()
                 </div>
             </div>
@@ -383,7 +330,7 @@
                     url: "/Home/GetSchemesList?name=" + $("#schemeName").html(),
                     type: "GET",
                     contentType: "application/json; charset=utf-8",
-                    dataType: "Json",
+                    dataType: "html",
 
                     success: function (data) {
                        

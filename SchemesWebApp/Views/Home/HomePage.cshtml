@@ -10,112 +10,96 @@
     }
 </style>
 <!-- Content Row -->
-<div class="row">
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4" style="height: 5px;margin-top: -8px;margin-left: -20px">
-      <a class="nav-link" href="#" id="userDropdown" style="width:250px"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      </a>
-        <div id="markattendancelable" class="dropdown-menu dropdown-menu-right shadow" style="width:200px;height:120px"
-             aria-labelledby="userDropdown">
-            <div id="markattendenceRemove">
-                <textarea style="margin-left:10px" placeholder="Remarks..." id="txtRemarks"></textarea>
-                <button class="btn btn-dark" data-dismiss="modal" id="btnCancel" style="margin-left:10px">Cancel</button>
-                <button class="btn btn-success sbm"  id="btnSubmit">Submit </button>
-            </div>
-            <label id="LoginLabel" style="margin-left:30px;" hidden>LoginTime:</label>
-            <div class="text-xs font-weight-bold text-black text-uppercase mb-1" style="margin-bottom:20px; margin-left:30px;" id="loginTime">
-                
-            </div>           
-            <button type="button" style="margin-left: 59px; margin-top: 17px;" class="btn btn-success" id="btnLogout" hidden="hidden">Logout</button>
-        </div>
-    </div>
-    
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Tasks
-                        </div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar"
-                                         style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                         aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                </div>
+    <div class="row justify-content-center">
+        <div class="mb-4" style="text-align: center; right:50%">
+            <div class="btn btn-primary">Banks</div>
+            <div class="row pt-3">
+            <a id="SBILoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">SBI</a>
+            <a id="UNIONLoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">UNION</a>
+            <a id="KARNATAKALoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">KARNATAKA</a>
             </div>
         </div>
     </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-
-    <div class="col-xl-3 col-md-6 mb-4" style="height: 5px;margin-top: -8px;margin-left: -20px">
-        <a class="nav-link" href="#" id="userDropdown" style="width:250px"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Pending Requests
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
+<div class="card border-primary col-sm-10 mx-auto d-none emiCalculatorDiv">
+    <div class="card-header bg-primary">
+        <h3 class="text-center" style="color:white">EMI CALCULATOR</h3>
     </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Any Queries
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">?</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                        <span class="bi bi-question-circle"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+    <div class="card-body align-items-center">
         <div class="row">
-           
-        </div>
-       
+            <div class="col-md-12">
+                <label for="loanAmount">Loan Amount (₹)</label>
+                <input type="range" id="loanAmount" min="100000" max="10000000" step="5000" value="100000">
+                <input type="number" id="loanAmountInput" >
+                <br>
 
+                <label for="interestRate">Interest Rate (%)</label>
+                <input type="range" id="interestRate" min="1" max="20" step="0.1" value="1">
+                <input type="number" id="interestRateInput" >
+                <br>
+
+                <label for="loanTenure">Loan Tenure (years)</label>
+                <input type="range" id="loanTenure" min="1" max="20" step="1" value="1">
+                <input type="number" id="loanTenureInput" >
+                <br>
+                <br>
+                <button onclick="calculateEMI()">Calculate EMI</button>
+
+            <h3>Results</h3>
+            <p>Loan EMI: ₹<span id="emi"></span></p>
+            <p>Total Interest Payable: ₹<span id="totalInterest"></span></p>
+            <p>Total Payment (Principal + Interest): ₹<span id="totalPayment"></span></p>
+            </div>
+            </div>
+  </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         
+        document.getElementById("loanAmount").addEventListener("input", function () {
+            document.getElementById("loanAmountInput").value = this.value;
+        });
+        document.getElementById("interestRate").addEventListener("input", function () {
+            document.getElementById("interestRateInput").value = this.value;
+        });
+        document.getElementById("loanTenure").addEventListener("input", function () {
+            document.getElementById("loanTenureInput").value = this.value;
+        });
+        document.getElementById("loanAmountInput").addEventListener("input", function () {
+            document.getElementById("loanAmount").value = this.value;
+        });
+        document.getElementById("interestRateInput").addEventListener("input", function () {
+            document.getElementById("interestRate").value = this.value;
+        });
+        document.getElementById("loanTenureInput").addEventListener("input", function () {
+            document.getElementById("loanTenure").value = this.value;
+        });
+        document.getElementById("loanAmountInput").value = document.getElementById("loanAmount").value;
+        document.getElementById("interestRateInput").value = document.getElementById("interestRate").value;
+        document.getElementById("loanTenureInput").value = document.getElementById("loanTenure").value;
+        calculateEMI();
+
     })
+    function calculateEMI() {
+        let principal = parseFloat(document.getElementById("loanAmountInput").value);
+        let rate = parseFloat(document.getElementById("interestRateInput").value) / 1200; // Monthly interest rate
+        let tenure = parseFloat(document.getElementById("loanTenureInput").value) * 12; // Loan tenure in months
+
+        let emi = principal * rate * Math.pow(1 + rate, tenure) / (Math.pow(1 + rate, tenure) - 1);
+        let totalPayment = emi * tenure;
+        let totalInterest = totalPayment - principal;
+        let principalAmount = principal;
+        document.getElementById("emi").textContent = emi.toFixed(2);
+        document.getElementById("totalInterest").textContent = totalInterest.toFixed(2);
+        document.getElementById("totalPayment").textContent = totalPayment.toFixed(2);
+        // document.getElementById("principalAmount").textContent = principalAmount.toFixed(2);
+        // document.getElementById("interestAmount").textContent = totalInterest.toFixed(2);
+    }
+
+    $(".emibtn").on("click",function(){
+        $(".emiCalculatorDiv").removeClass("d-none");
+        $(".emiCalculatorDiv #loanAmount").attr("min","200000");
+        $(".emiCalculatorDiv #loanAmount").attr("max","10000000");
+    })
+
 </script>
 

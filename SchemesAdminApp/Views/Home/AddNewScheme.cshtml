@@ -1,0 +1,71 @@
+﻿@model Schemes.ViewModels.SchemeDetails
+
+@{
+    ViewData["Title"] = "AddNewScheme";
+}
+
+<h1>AddNewScheme</h1>
+
+<h4>SchemeDetails</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddNewScheme">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="NameOftheScheme" class="control-label"></label>
+                <input asp-for="NameOftheScheme" class="form-control" />
+                <span asp-validation-for="NameOftheScheme" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EligibilityCriteria" class="control-label"></label>
+                <input asp-for="EligibilityCriteria" class="form-control" />
+                <span asp-validation-for="EligibilityCriteria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Benefits" class="control-label"></label>
+                <input asp-for="Benefits" class="form-control" />
+                <span asp-validation-for="Benefits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Area" class="control-label"></label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocumentsRequired" class="control-label"></label>
+                <input asp-for="DocumentsRequired" class="form-control" />
+                <span asp-validation-for="DocumentsRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplyAndLink" class="control-label"></label>
+                <input asp-for="ApplyAndLink" class="form-control" />
+                <span asp-validation-for="ApplyAndLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="control-label"></label>
+                <input asp-for="IsActive" class="form-control" />
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvailableFor" class="control-label"></label>
+                <input asp-for="AvailableFor" class="form-control" />
+                <span asp-validation-for="AvailableFor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

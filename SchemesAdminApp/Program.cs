@@ -3,7 +3,7 @@ using Schemes.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
-builder.Services.AddDbContext<SchemesContext>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon")));
+builder.Services.AddDbContext<SchemesContext>();
 
 builder.Services.AddControllersWithViews();
 

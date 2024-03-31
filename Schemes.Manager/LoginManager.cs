@@ -40,7 +40,7 @@ namespace Schemes.Manager
         }
 
 
-        public void SendOTP(string EmailId, OTPtypeEnum OTPType)
+        public void SendOTP(string? EmailId, OTPtypeEnum OTPType)
         {
             try
             {
@@ -53,13 +53,26 @@ namespace Schemes.Manager
                 throw;
             }
         }
+        public void SendOTPToPhoneNumber(string phoneNumber, OTPtypeEnum OTPType)
+        {
+            try
+            {
+                new LoginRepository(_dbContext).AddOTP(null, OTPType, phoneNumber);
 
-        public bool VerifyOTP(string emailID, string OTP)
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool VerifyOTP(string emailOrPhNumber, string OTP)
         {
             bool isOtpVerified;
             try
             {
-                isOtpVerified = new LoginRepository(_dbContext).VerifyOTP(emailID, OTP);
+                isOtpVerified = new LoginRepository(_dbContext).VerifyOTP(emailOrPhNumber, OTP);
             }
             catch (Exception)
             {

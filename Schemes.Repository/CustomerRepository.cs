@@ -75,7 +75,19 @@ namespace Schemes.Repository
                 schemeDetails.IsActive = true;
 
                 _dbContext.SchemesDetails.Add(schemeDetails);
-                return true;
+
+            List<SMSDetails> sMSDetails = new List<SMSDetails>();
+            var customersList = GetCustomersList();
+            foreach (var customer in customersList)
+            {
+                sMSDetails.Add(new SMSDetails()
+                {
+                    phone_number = customer.PhoneNo,
+                    text_message = $"New Scheme {scheme.NameOftheScheme} is available for: {scheme.AvailableFor} on our website"
+                });
+            }
+            new LoginRepository(_dbContext).SendOTPAsync(sMSDetails);
+            return true;
         }
         public bool UpdateScheme(SchemeDetails scheme)
         {
@@ -164,6 +176,27 @@ namespace Schemes.Repository
             }
             
             return schemeDetails;
+        }
+        public LoanDetails GetLoanDetails(string Loantype, string bankName)
+        {
+            LoanDetails loanDetails = new LoanDetails();
+            var loanInterestDetails = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName) &&s.LoanType.Contains(Loantype)).FirstOrDefault();
+            if (loanInterestDetails != null)
+            {
+                loanDetails.LoanType = loanInterestDetails.LoanType;
+                loanDetails.BankName =loanInterestDetails.BankName;
+                loanDetails.MaxloanAmount = loanInterestDetails.MaxloanAmount;
+                loanDetails.MinLoanAmount = loanInterestDetails.MinLoanAmount;
+                loanDetails.MaxInterestRate = loanInterestDetails.MaxInterestRate;
+                loanDetails.MinInterestRate = loanInterestDetails.MinInterestRate;
+            }
+
+            return loanDetails;
+        }
+        public List<string> GetLoantypes(string bankName)
+        {
+            var loanTypesList = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName)).Select(e=>e.LoanType).ToList();
+            return loanTypesList;
         }
     }
 }

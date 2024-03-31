@@ -41,5 +41,15 @@ namespace Schemes.Manager
             var result = new CustomerRepository(_dbContext).UpdateScheme(schemeDetails);
             return result;
         }
+        public LoanDetails GetLoanDetails(string Loantype, string bankName)
+        {
+            var loanDetails = new CustomerRepository(_dbContext).GetLoanDetails(Loantype, bankName);
+            return loanDetails;
+        }
+        public List<string> GetLoantypes(string bankName)
+        {
+            var types = new CustomerRepository(_dbContext).GetLoantypes(bankName);
+            return types;
+        }
     }
 }

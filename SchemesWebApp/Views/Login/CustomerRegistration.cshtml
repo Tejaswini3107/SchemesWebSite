@@ -62,6 +62,19 @@
                                     @*@Html.ValidationMessageFor(model=>model.PhoneNumber,"",new {@class ="text-danger"})*@
                                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
+                                    <div class="form-group row" id="sendSMSOTPDiv" style="padding-left:15px">
+                                        <input type="button" class="btn btn-primary btn-block w-25" disabled="disabled" id="sendSMSOTPBtn" value="Send OTP" />
+                                    </div>
+                                    <div class="form-group row" id="SMSOTPDiv" hidden="hidden">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <input type="text" id="SMSOTPField" class="form-control form-control-user"
+                                                   placeholder="Enter OTP" autocomplete="off">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="button" id="SMSVerifyBtn" class="btn btn-primary btn-user btn-block" value="Verify OTP">
+                                        </div>
+                                        <a id="resendSMSOtp" href="javascript:void(0)" class="link-danger col-sm-6 mb-sm-0" hidden="hidden" style="font-size:12px"> Resend OTP</a>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <input asp-for="EmailId" type="email" asp-validation-for="EmailId" class="form-control form-control-user" id="exampleInputEmail"
@@ -201,6 +214,62 @@
                     }
                 };
             }
+
+            $('#PhoneNumber').on('input change', function () {
+                if ($(this).val() != '') {
+                    $('#sendSMSOTPBtn').prop('disabled', false);
+                }
+                else {
+                    $('#sendSMSOTPBtn').prop('disabled', true);
+                }
+            });
+
+
+            $("#sendSMSOTPBtn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Login/SendSMSOTP?phoneNumber=' + $("#PhoneNumber").val(),
+                    success: function (data) {
+                        alert("OTP has Been Sent to your PhonenUmber");
+                        $("#sendSMSOTPDiv").attr("hidden", "hidden");
+                        $("#submitBtn").attr("hidden", "hidden");
+
+                        $("#OTPDiv").removeAttr("hidden");
+                        $("#resendOtp").removeAttr("hidden");
+                    }
+                });
+            });
+            $("#resendSMSOtp").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Login/SendSMSOTP?phoneNumber=' + $("#PhoneNumber").val(),
+                    datatype: 'json',
+                    success: function (data) {
+                        alert("OTP has Been Sent to your PhonenUmber");
+                        $("#sendSMSOTPDiv").attr("hidden", "hidden");
+                        $("#SMSOTPDiv").removeAttr("hidden");
+                    }
+                });
+            });
+            $("#SMSVerifyBtn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Login/VerifySMSOTP?phoneNumber=' + $("#PhoneNumber").val() + '&&OTP=' + $("#SMSOTPField").val(),
+                    datatype: 'json',
+                    success: function (data) {
+                        if (data == true) {
+                            alert("PhoneNumber is Verified");
+                            $("#sendSMSOTPDiv").attr("hidden", "hidden");
+                            $("#SMSOTPDiv").attr("hidden", "hidden");
+                            $("#resendSMSOtp").attr("hidden", "hidden");
+                           
+                        }
+                        else {
+                            alert("Incorrect OTP");
+                        }
+                    }
+                });
+            });
         });
     </script>
 

@@ -64,6 +64,17 @@ namespace SchemesWebApp.Controllers
             return BadRequest();
 
         }
+        [HttpPost]
+        public IActionResult SendSMSOTP(string phoneNumber)
+        {
+            if (ModelState.IsValid)
+            {
+                var OTPType = OTPtypeEnum.RegistrationThroughPhone;
+                new LoginManager(_dbContext).SendOTPToPhoneNumber(phoneNumber, OTPType);
+                return Ok();
+            }
+            return BadRequest();
+        }
         public IActionResult ForgotPassword()
         {
             return View();
@@ -99,6 +110,12 @@ namespace SchemesWebApp.Controllers
         public IActionResult VerifyOTP(string emailId, string OTP)
         {
             var IsOTPVerified = new LoginManager(_dbContext).VerifyOTP(emailId, OTP);
+            return Json(IsOTPVerified);
+        }
+        [HttpPost]
+        public IActionResult VerifySMSOTP(string phoneNumber, string OTP)
+        {
+            var IsOTPVerified = new LoginManager(_dbContext).VerifyOTP(phoneNumber, OTP);
             return Json(IsOTPVerified);
         }
         [HttpPost]
