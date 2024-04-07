@@ -36,6 +36,50 @@ namespace Schemes.Repository
             }
             return schemeDetailsList;
         }
+        public List<SchemeDetails>? GetSchemesListByLangCode(string name, string langCode)
+        {
+            List<SchemeDetails>? schemeDetailsList = new List<SchemeDetails>();
+            var schemeDetailsFromDB = _dbContext.MultilingualSchemesData.Where(s => s.AvaliableFor.Contains(name)&&s.IsActive == true).ToList();
+            if (schemeDetailsFromDB != null)
+            {
+                var details = _dbContext.MultilingualSchemesData.Where(s => s.AvaliableFor.Contains(name) && s.LangCode == langCode && s.IsActive == true).ToList();
+                if (details != null)
+                {
+                    foreach (var scheme in details)
+                    {
+                        SchemeDetails schemeDetails = new SchemeDetails();
+                        schemeDetails.SchemesDetailID = scheme.SchemesDetailID;
+                        schemeDetails.Area = scheme.Area;
+                        schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
+                        schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
+                        schemeDetails.Benefits = scheme.Benefits;
+                        schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
+                        schemeDetails.Description = scheme.Description;
+                        schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+
+                        schemeDetailsList.Add(schemeDetails);
+                    }
+                }
+                else
+                {
+                    foreach (var scheme in schemeDetailsFromDB)
+                    {
+                        SchemeDetails schemeDetails = new SchemeDetails();
+                        schemeDetails.SchemesDetailID = scheme.SchemesDetailID;
+                        schemeDetails.Area = scheme.Area;
+                        schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
+                        schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
+                        schemeDetails.Benefits = scheme.Benefits;
+                        schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
+                        schemeDetails.Description = scheme.Description;
+                        schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+
+                        schemeDetailsList.Add(schemeDetails);
+                    }
+                }
+            }
+            return schemeDetailsList;
+        }
         public List<SchemeDetails> GetAllSchemesList()
         {
             List<SchemeDetails> schemeDetailsList = new List<SchemeDetails>();
@@ -61,8 +105,6 @@ namespace Schemes.Repository
         }
         public bool AddNewScheme(SchemeDetails scheme)
         {
-
-
             Models.SchemesDetails schemeDetails = new SchemesDetails();
                 schemeDetails.Area = scheme.Area;
                 schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
@@ -73,8 +115,10 @@ namespace Schemes.Repository
                 schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
                 schemeDetails.AvaliableFor = scheme.AvailableFor;
                 schemeDetails.IsActive = true;
-
-                _dbContext.SchemesDetails.Add(schemeDetails);
+            schemeDetails.InsertedDate = DateTime.Now;
+            schemeDetails.InsertedBy = "Admin";
+               var details= _dbContext.SchemesDetails.Add(schemeDetails).Entity;
+                _dbContext.SaveChanges();
 
             List<SMSDetails> sMSDetails = new List<SMSDetails>();
             var customersList = GetCustomersList();
@@ -87,6 +131,35 @@ namespace Schemes.Repository
                 });
             }
             new LoginRepository(_dbContext).SendOTPAsync(sMSDetails);
+            MultilingualSchemesDataVM schemeData = new MultilingualSchemesDataVM();
+            schemeData.Area = scheme.Area;
+            schemeData.ApplyAndLink = scheme.ApplyAndLink;
+            schemeData.NameOftheScheme = scheme.NameOftheScheme;
+            schemeData.Benefits = scheme.Benefits;
+            schemeData.EligibilityCriteria = scheme.EligibilityCriteria;
+            schemeData.Description = scheme.Description;
+            schemeData.DocumentsRequired = scheme.DocumentsRequired;
+            schemeData.AvaliableFor = scheme.AvailableFor;
+            AddNewSchemeByLangCode(schemeData, details.SchemesDetailID, "en");
+            return true;
+        }
+        public bool AddNewSchemeByLangCode(MultilingualSchemesDataVM scheme,int schemeID,string LangCode)
+        {
+            Models.MultilingualSchemesData schemeDetails = new MultilingualSchemesData();
+            schemeDetails.Area = scheme.Area;
+            schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
+            schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
+            schemeDetails.Benefits = scheme.Benefits;
+            schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
+            schemeDetails.Description = scheme.Description;
+            schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+            schemeDetails.AvaliableFor = scheme.AvaliableFor;
+            schemeDetails.LangCode = LangCode;
+            schemeDetails.SchemesDetailID = schemeID;
+            schemeDetails.IsActive = true;
+            schemeDetails.InsertedDate = DateTime.Now;
+            schemeDetails.InsertedBy = "Admin";
+            _dbContext.MultilingualSchemesData.Add(schemeDetails);
             return true;
         }
         public bool UpdateScheme(SchemeDetails scheme)
@@ -103,6 +176,8 @@ namespace Schemes.Repository
                 details.Description = scheme.Description;
                 details.DocumentsRequired = scheme.DocumentsRequired;
                 details.AvaliableFor = scheme.AvailableFor;
+                details.UpdatedDate = DateTime.Now;
+                details.UpdatedBy = "Admin";
                 _dbContext.SaveChanges();
                 return true;
             }

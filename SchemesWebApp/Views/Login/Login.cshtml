@@ -24,11 +24,21 @@
 </head>
 
 <body class="bg-gradient-primary">
+    <style>
+        .links-container {
+            display: flex;
+            justify-content: space-between; /* This will position the links at opposite ends */
+        }
 
+            .links-container > div {
+                /* Optional: Add styles for individual link containers */
+                /* For example: flex: 1; to make both link containers occupy equal space */
+            }
+    </style>
     <div class="container ">
 
         <!-- Outer Row -->
-        <div class="row justify-content-center" style="margin-top:80px">
+        <div class="row justify-content-center" >
 
             <div class="col-xl-10 col-lg-12 col-md-9">
 
@@ -36,13 +46,13 @@
                     <div class="card-body p-0  ">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <img src="~/img/vivifi-logo.png" alt="Vivifi-Logo" style="height:100px; width:300px; margin-top:140px; margin-left:70px; margin-right:20px;" />
+                            <img src="~/img/vivifi-logo.png" alt="Vivifi-Logo" style="height:100px; width:300px; margin-top:51px; margin-left:70px; margin-right:20px;" />
                           
                             @*<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>*@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome</h1>
                                     </div>
                                     <div style="align-content:center">
                                         @if (@ViewBag.LoginFailed!=null)
@@ -75,29 +85,36 @@
                                         @*<a href="EmployeeDailyTracker.cshtml" class="btn btn-primary btn-user btn-block">
                                             Login
                                         </a>*@
-                                        <div >
                                             <input type="submit" class="btn btn-primary btn-user btn-block" value="Login" />
                                             
-                                        </div>
 
 
                                        
 
                                     </form>
                                     
-                                    <div class="text-center">
-                                        @*<a class="small" href="forgot-password.html">Forgot Password?</a>*@
-                                        <a class="small" href="@Url.Action("ForgotPassword", "Login")">Forgot Password?</a>
+                                    <div class="links-container">
+                                        <div>
+                                            <a class="small" href="@Url.Action("ForgotPassword", "Login")">Forgot Password?</a>
+                                        </div>
+                                        <div>
+                                            <a class="small" href="@Url.Action("CustomerRegistration", "Login")">Create an Account!</a>
+                                        </div>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="@Url.Action("CustomerRegistration", "Login")">Create an Account!</a>
+                                        OR
+                                     </div>
+                                    <div class="text-center" style="top:-10%">
+                                        <a class="large" href="@Url.Action("SkipLogin", "Login")">Skip For Now</a>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
+
                     </div>
                 </div>
-
+                
             </div>
 
         </div>

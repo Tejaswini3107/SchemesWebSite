@@ -29,7 +29,13 @@
 
 </head>
 <body id="page-top">
-
+    <style>
+        .dropdown-container {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -98,26 +104,23 @@
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
+                        <li >
+                            
                             <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                 aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                               placeholder="Search for..." aria-label="Search"
-                                               aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="dropdown-container">
+                                <label for="language">Select a language:</label>
+                                <select id="language">
+                                    <option value="en" selected>English</option>
+                                    <option value="hi">Hindi</option>
+                                    <option value="ar">Arabic</option>
+                                    <option value="bho">Bhojpuri</option>
+                                    <option value="kn">Kannada</option>
+                                    <option value="ml">Malayalam</option>
+                                    <option value="ta">Tamil</option>
+                                    <option value="te">Telugu</option>
+                                    <option value="ur">Urdu</option>
+                                </select>
+                                <input type="hidden" id="selectedlanguage" />
                             </div>
                         </li>
 
@@ -255,10 +258,11 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@ViewBag.Name</span>
                                 <img class="img-profile rounded-circle " src="~/img/undraw_profile.svg">
                             </a>
+                           
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="~/Home/EmployeeProfileDetails?Empid=@ViewBag.Id">
+                                <a class="dropdown-item" href="~/Home/CustomerProfileDetails?customerID=@ViewBag.CustomerId">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     <span class="profileimg">Profile</span>
                                 </a>
@@ -271,15 +275,47 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="~/Account/LogOut" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="~/Login/LogOut" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
+                                </a>
+                                <a class="dropdown-item" href="~/Home/InactivateCustomer?customerID=@ViewBag.CustomerId" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Deactivate Account
                                 </a>
                             </div>
                         </li>
 
                     </ul>
                 </nav>
+                <div id="disable" hidden>
+                    <table id="tblprofiledetails" class="table table-bordered ">
+                        <thead>
+                            
+                            <tr>
+                                <td><b>FirstName</b></td>
+                                <td id="firstName"></td>
+                            </tr>
+                            <tr>
+                                <td><b>LastName</b></td>
+                                <td id="lastName"></td>
+                            </tr>
+                            <tr>
+                                <td><b>Email</b></td>
+                                <td id="email"></td>
+                            </tr>
+                            <tr>
+                                <td><b>PhoneNo</b></td>
+                                <td id="phno"></td>
+                            </tr>
+                            <tr>
+                                <td><b>DOB</b></td>
+                                <td id="dob"></td>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
                 <div class="container">
                     @RenderBody()
                 </div>
@@ -325,9 +361,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var langCode = $("#selectedlanguage").val();
             $("#schemeName").on('click', function () {
                 $.ajax({
-                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html(),
+                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "langCode=" + langCode,
                     type: "GET",
                     contentType: "application/json; charset=utf-8",
                     dataType: "html",
@@ -341,8 +378,45 @@
                 });
             });
         });
-      
 
+            $("#disable").hide();
+            $(".profileimg").click(function () {
+                $("#disable").show();
+            var value = "@ViewBag.CustomerId";
+                $.ajax({
+                url: "/Home/CustomerProfileDetails?customerID=" + value,
+                    type: "GET",
+                    data: value,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "Json",
+
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        var empData = '';
+                        $(data).each(function (key, value) {
+                        $('#firstName').html(value.FirstName);
+                        $('#lastName').html(value.LastName);
+                        $('#email').html(value.EmailId);
+                        $('#phno').html(value.PhoneNo);
+                        $('#dob').html(value.DateOfBirth);
+                        });
+                        $(".container-fluid").css("display", "none");
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            });
+        document.addEventListener("DOMContentLoaded", function () {
+            var languageDropdown = document.getElementById("language");
+            var selectedLanguageInput = document.getElementById("selectedlanguage");
+
+            // Event listener for when an option is selected
+            languageDropdown.addEventListener("change", function () {
+                var selectedLanguage = languageDropdown.value;
+                selectedLanguageInput.value = selectedLanguage;
+            });
+        });
     </script>
 </body>
 </html>

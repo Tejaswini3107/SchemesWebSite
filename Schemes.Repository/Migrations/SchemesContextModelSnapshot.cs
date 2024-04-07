@@ -239,6 +239,66 @@ namespace Schemes.Repository.Migrations
                     b.ToTable("LoanInterestDetails");
                 });
 
+            modelBuilder.Entity("Schemes.Models.MultilingualSchemesData", b =>
+                {
+                    b.Property<int>("MultilingualSchemesDataID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MultilingualSchemesDataID"));
+
+                    b.Property<string>("ApplyAndLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Area")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AvaliableFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Benefits")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocumentsRequired")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EligibilityCriteria")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InsertedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InsertedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LangCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameOftheScheme")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SchemesDetailID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("MultilingualSchemesDataID");
+
+                    b.ToTable("MultilingualSchemesData");
+                });
+
             modelBuilder.Entity("Schemes.Models.OTPDetails", b =>
                 {
                     b.Property<int>("OTPDetailsId")

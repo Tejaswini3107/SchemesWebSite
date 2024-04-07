@@ -38,12 +38,25 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
         }
-        public IActionResult GetSchemesList(string name)
+        public IActionResult GetSchemesList(string name,string langCode="en")
         {
             try
             {
-                List<SchemeDetails> list = new CustomerManager(_dbContext).GetSchemesList(name);
+                List<SchemeDetails> list = new CustomerManager(_dbContext).GetSchemesList(name,langCode);
                 return View(list);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public IActionResult CustomerProfileDetails(int customerID)
+        {
+            try
+            {
+                CustomerDetails? details = new CustomerManager(_dbContext).GetCustomersList().Where(s=>s.CustomerId==customerID).FirstOrDefault();
+
+                return PartialView(details);
             }
             catch (Exception ex)
             {
@@ -68,6 +81,24 @@ namespace SchemesWebApp.Controllers
             {
                 List<string> list = new CustomerManager(_dbContext).GetLoantypes(bankName);
                 return View(list);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost]
+        public IActionResult InactivateCustomer(int customerID)
+        {
+            try
+            {
+                bool result = new CustomerManager(_dbContext).UpdateCustomerStatus(customerID);
+
+                if(result)
+                {
+                    return RedirectToAction("Login","Login");
+                }
+                return RedirectToAction("HomePage","Home");
             }
             catch (Exception ex)
             {

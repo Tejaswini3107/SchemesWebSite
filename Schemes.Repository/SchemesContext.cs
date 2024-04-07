@@ -16,6 +16,7 @@ namespace Schemes.Repository
         public DbSet<SchemesDetails> SchemesDetails { get; set; }
         public DbSet<OTPDetails> OTPDetails { get; set; }
         public DbSet<LoanInterestDetails> LoanInterestDetails { get; set; }
+        public DbSet<MultilingualSchemesData> MultilingualSchemesData { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

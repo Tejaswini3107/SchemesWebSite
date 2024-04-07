@@ -114,4 +114,31 @@ namespace Schemes.ViewModels
         public string MaxInterestRate { get; set; }
 
     }
+    public class SessionUser
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+    public class TranslationResponse
+    {
+        public List<TranslationItem> Translations { get; set; }
+    }
+
+    public class TranslationItem
+    {
+        public string Text { get; set; }
+        public string To { get; set; }
+    }
+    public class MultilingualSchemesDataVM
+    {
+        
+        public string? AvaliableFor { get; set; }
+        public string? NameOftheScheme { get; set; }
+        public string? Description { get; set; }
+        public string? EligibilityCriteria { get; set; }
+        public string? Benefits { get; set; }
+        public string? Area { get; set; }
+        public string? DocumentsRequired { get; set; }
+        public string? ApplyAndLink { get; set; }
+    }
 }

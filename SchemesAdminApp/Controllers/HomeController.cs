@@ -13,7 +13,7 @@ namespace SchemesAdminApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly SchemesContext _dbContext;
 
-        public HomeController(LoginManager loginManager, SchemesContext DbContext, ILogger<HomeController> logger)
+        public HomeController(SchemesContext DbContext, ILogger<HomeController> logger)
         {
             _logger = logger;
             _dbContext = DbContext;
@@ -37,6 +37,7 @@ namespace SchemesAdminApp.Controllers
                 throw ex;
             }
         }
+        [HttpGet]
         public IActionResult GetSchemesList()
         {
             try

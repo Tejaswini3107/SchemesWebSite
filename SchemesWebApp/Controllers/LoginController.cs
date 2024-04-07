@@ -18,6 +18,7 @@ namespace SchemesWebApp.Controllers
         }
         public IActionResult Login()
         {
+            ViewBag.CustomerId = 0;
             return View();
         }
         [HttpPost]
@@ -29,6 +30,7 @@ namespace SchemesWebApp.Controllers
                 int CustomerId = new LoginManager(_dbContext).GetCustomerLogin(EmailId, password);
                 if (CustomerId != 0)
                 {
+                    ViewBag.CustomerId = CustomerId;
                     return RedirectToAction("HomePage", "Home");
                 }
                 else
@@ -39,6 +41,7 @@ namespace SchemesWebApp.Controllers
             }
             return BadRequest();
         }
+
         public IActionResult CustomerRegistration()
         {
             return View();
@@ -57,7 +60,7 @@ namespace SchemesWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var OTPType = OTPtypeEnum.RegistrationThroughEmail;
+                var OTPType = OTPtypeEnum. RegistrationThroughEmail;
                 new LoginManager(_dbContext).SendOTP(emailId, OTPType);
                 return Ok();
             }
@@ -137,6 +140,11 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
 
+        }
+        public IActionResult SkipLogin()
+        {
+            ViewBag.CustomerId = 0;
+            return RedirectToAction("HomePage","Home");
         }
     }
 }

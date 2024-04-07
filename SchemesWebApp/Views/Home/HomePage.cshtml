@@ -14,40 +14,40 @@
         <div class="mb-4" style="text-align: center; right:50%">
             <div class="btn btn-primary">Banks</div>
             <div class="row pt-3">
-            <a id="SBILoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">SBI</a>
+            <a id="SBILoanEMI" class="btn btn-primary col m-2 emibtn"  role="button" data-bs-toggle="button">SBI</a>
             <a id="UNIONLoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">UNION</a>
             <a id="KARNATAKALoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">KARNATAKA</a>
             </div>
         </div>
     </div>
-<div class="card border-primary col-sm-10 mx-auto d-none emiCalculatorDiv">
+<div class="card border-primary col-sm-10 mx-auto emiCalculatorDiv">
     <div class="card-header bg-primary">
         <h3 class="text-center" style="color:white">EMI CALCULATOR</h3>
     </div>
     <div class="card-body align-items-center">
         <div class="row">
             <div class="col-md-12">
-                <label for="loanAmount">Loan Amount (₹)</label>
+                <label style="color:Black; padding-top:1%" for="loanAmount">Loan Amount (₹)</label>
                 <input type="range" id="loanAmount" min="100000" max="10000000" step="5000" value="100000">
-                <input type="number" id="loanAmountInput" >
+                <input type="text" id="loanAmountInput" >
                 <br>
 
-                <label for="interestRate">Interest Rate (%)</label>
+                <label style="color:Black; padding-top:1%" for="interestRate">Interest Rate (%)</label>
                 <input type="range" id="interestRate" min="1" max="20" step="0.1" value="1">
-                <input type="number" id="interestRateInput" >
+                <input type="text" id="interestRateInput" >
                 <br>
 
-                <label for="loanTenure">Loan Tenure (years)</label>
+                <label style="color:Black; padding-top:1%" for="loanTenure">Loan Tenure (years)</label>
                 <input type="range" id="loanTenure" min="1" max="20" step="1" value="1">
-                <input type="number" id="loanTenureInput" >
+                <input type="text" id="loanTenureInput" >
                 <br>
                 <br>
-                <button onclick="calculateEMI()">Calculate EMI</button>
+                <button onclick="calculateEMI()" class="btn btn-primary">Calculate EMI</button>
 
-            <h3>Results</h3>
-            <p>Loan EMI: ₹<span id="emi"></span></p>
-            <p>Total Interest Payable: ₹<span id="totalInterest"></span></p>
-            <p>Total Payment (Principal + Interest): ₹<span id="totalPayment"></span></p>
+            <h3 style="color:Black; padding-top:1%">Results</h3>
+                <p style="color:Black; padding-top:1%">Loan EMI: ₹<span style="font-style:oblique;font-weight:600; padding-top:1%" id="emi"></span></p>
+                <p style="color:Black; padding-top:1%">Total Interest Payable: ₹ <span style="font-style:oblique;font-weight:600; padding-top:1%" id="totalInterest"></span></p>
+                <p style="color:Black; padding-top:1%">Total Payment (Principal + Interest): ₹<span style="font-style:oblique;font-weight:600; padding-top:1%" id="totalPayment"></span></p>
             </div>
             </div>
   </div>
@@ -91,6 +91,8 @@
         document.getElementById("emi").textContent = emi.toFixed(2);
         document.getElementById("totalInterest").textContent = totalInterest.toFixed(2);
         document.getElementById("totalPayment").textContent = totalPayment.toFixed(2);
+        var text = "(" + principalAmount.toString() + "+" + totalInterest.toFixed(2).toString() + ")";
+        document.getElementById("totalPayment").append(text);
         // document.getElementById("principalAmount").textContent = principalAmount.toFixed(2);
         // document.getElementById("interestAmount").textContent = totalInterest.toFixed(2);
     }
