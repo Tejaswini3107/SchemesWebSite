@@ -27,29 +27,6 @@ namespace Schemes.ViewModels
         public string PhoneNo { get; set; }
         public DateTime? DateOfBirth { get; set; }
     }
-    public class  AdminLoginVM
-    {
-        [Required(ErrorMessage = "Emailid is required")]
-        [RegularExpression(@"^([a-zA-Z0-9]+[a-zA-Z0-9\.]*[a-zA-Z0-9]+)@(gmail)\.(com)$", ErrorMessage = "EmailId must contain @gmail domain")]
-        public string? EmailId { get; set; }
-        [Required(ErrorMessage = "PhoneNumber is required")]
-        [RegularExpression(@"(^[6 - 9]\d{9}$)", ErrorMessage = "PhoneNumber is required")]
-        public string? PhoneNumber { get; set; }
-
-        [Required(ErrorMessage = "Password is required")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-    }
-    public class AdminVM 
-    {
-        public int AdminId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string EmailId { get; set; }
-        public string PhoneNo { get; set; }
-        public List<CustomerDetails> customerDetails { get; set; }
-    }
 
     public class CustomerDetails
     {

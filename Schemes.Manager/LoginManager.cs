@@ -106,7 +106,13 @@ namespace Schemes.Manager
             new LoginRepository(_dbContext).UpdatePassword(registrationViewModel);
         }
 
+        public int GetAdminLogin(string userName, string password)
+        {
+            CustomerLoginVM CustomerLoginViewModel = new CustomerLoginVM();
+            var empID = new LoginRepository(_dbContext).GetAdminLogin(userName, password);
 
+            return empID;
+        }
 
 
     }

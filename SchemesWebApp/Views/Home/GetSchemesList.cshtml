@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Home";
-    Layout = "~/Views/Shared/MasterPage.cshtml";
+    // Layout = "~/Views/Shared/MasterPage.cshtml";
+    string availableFor = ViewBag.AvailableFor;
 }
 <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -19,13 +20,15 @@
 
 <!-- Custom scripts for all pages-->
 <script src="~/js/sb-admin-2.min.js"></script>
-
-<table class="table table-striped schemestable" id="schemestable">
-    <thead>
+<div style="text-align: center;color: black; font-weight: bold;top :20px;font-size:20px;">
+    Schemes Available For @availableFor
+</div>
+<table class="table table-hover schemestable align-content-center" id="schemestable" style="color:black; top:40px; font-size:15px">
+    <thead class="thead-dark">
         <tr>
             <th class="d-none">
             </th>
-            <th>
+            <th style="">
                 Name Of the Scheme
             </th>
             <th>
@@ -34,13 +37,13 @@
             <th>
                 Eligibility Criteria
             </th>
-            <th>
+            <th class="d-none">
                 Benefits
             </th>
-            <th>
+            <th class="d-none">
                Area
             </th>
-            <th>
+            <th class="d-none">
                Documents Required
             </th>
             <th>
@@ -55,7 +58,7 @@
                 <td class="d-none">
                     @item.SchemesDetailID
                 </td>
-            <td>
+                <td >
                     <a> @Html.DisplayFor(modelItem => item.NameOftheScheme)
                     </a>
             </td>
@@ -65,16 +68,16 @@
             <td>
                     <a> @Html.DisplayFor(modelItem => item.EligibilityCriteria)</a>
             </td>
-            <td>
+                <td class="d-none">
                     <a> @Html.DisplayFor(modelItem => item.Benefits)</a>
             </td>
-            <td>
+                <td class="d-none">
                     <a> @Html.DisplayFor(modelItem => item.Area)</a>
             </td>
-            <td>
+                <td class="d-none">
                     <a> @Html.DisplayFor(modelItem => item.DocumentsRequired)</a>
             </td>
-            <td>
+            <td >
                     <a> @Html.Raw(item.ApplyAndLink)</a>
             </td>
         </tr>
@@ -85,13 +88,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-center" id="exampleModalLabel"></h5>
+                <button type="button" class="close closeBtn" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-    <table id="tblschemedetails" class="table table-bordered ">
+    <table id="tblschemedetails" class="table table-bordered" style="color:black;font-size:16px">
         <thead>
 
             <tr>
@@ -142,15 +145,22 @@
     </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary closeBtn" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
-    let table = new DataTable('#schemestable');
+    let table = new DataTable('#schemestable', {
+        order: [[1, 'desc']],
+        columnDefs: [
+            { "orderable": false, "targets": [0,2,3, 4, 5, 6] },
+            { "orderable": true, "targets": [1] }
+        ]
+    });
 
+    
     table.on('click', 'tbody tr', function () {
         let data = table.row(this).data();
         $("#tblschemedetailsDiv").modal('show');
@@ -163,5 +173,13 @@
         $("#tblschemedetails #DocumentsRequired").html(data[6]);
         $("#tblschemedetails #applyandlink").html(data[7]);
     });
+    $(".closeBtn").on('click', function(){
+        $("#tblschemedetailsDiv").modal('hide');
+    });
+    $(".dataTables_filter").addClass("d-none");
+    $("#schemestable_length,#schemestable_info,#schemestable_paginate").attr("style", "font-size:12px");
+    $("#schemestable_wrapper").attr("style", "top:30px");
+
+
 </script>
 

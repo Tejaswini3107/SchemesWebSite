@@ -13,9 +13,8 @@ namespace Schemes.Models
         public int AdminLoginId { get; set; }
         public int AdminId { get; set; }
         public string? EmailId { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? PasswordHash { get; set; }
-        public string? PasswordSalt { get; set; }
+        public string? UserName { get; set; }
+        public string? Password { get; set; }
         public bool? LoginStatus { get; set; }
     }
 }

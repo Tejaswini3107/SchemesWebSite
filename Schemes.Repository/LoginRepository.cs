@@ -35,6 +35,24 @@ namespace Schemes.Repository
             }
 
         }
+        public int GetAdminLogin(string userName, string password)
+        {
+            try
+            {
+                var adminLogin = _dbContext.AdminLogin.Where(e => e.UserName == userName && e.Password == password).FirstOrDefault();
+                if (adminLogin != null)
+                {
+
+                    return adminLogin.AdminId;
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
         public string AddOTP(string? EmailId,OTPtypeEnum OTPType, string PhoneNumber="")
         {

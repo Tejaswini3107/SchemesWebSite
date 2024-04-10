@@ -43,6 +43,7 @@ namespace SchemesWebApp.Controllers
             try
             {
                 List<SchemeDetails> list = new CustomerManager(_dbContext).GetSchemesList(name,langCode);
+                ViewBag.AvailableFor = name;
                 return View(list);
             }
             catch (Exception ex)

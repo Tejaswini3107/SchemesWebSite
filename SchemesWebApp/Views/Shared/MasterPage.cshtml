@@ -17,6 +17,7 @@
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="~/SchemesWebApp.styles.css" asp-append-version="true" />
 
     @*<!-- Core plugin JavaScript-->
     <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>*@
@@ -43,8 +44,8 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="~/Home/HomePage">
-                <div class="sidebar-brand-icon pt-4">
-                    <img src="~/img/vivifi-logo.png" style="width:90%;padding:10px;height:40%;background-color:white" />
+                <div class="sidebar-brand-icon pt-0">
+                    <img src="~/img/Fineasee_logo.png" style="width:50%;padding-bottom:10px;padding-right:10px;padding-left:10px;height:40%;background-color:white" />
                 </div>
 
             </a>
@@ -52,14 +53,14 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
             <li class="nav-item" id="EmpShow">
-                <a class="nav-link" href="~/Home/HomePage" style="color:white"><i class="fas fa-fw fa-tachometer-alt"></i><span>Home</span></a>
+                <a class="nav-link" href="~/Home/HomePage" style="color:white"><span>Home</span></a>
             </li>
             <!-- Nav Item - Tables -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" id="Schemes" href="#" data-toggle="collapse" data-target="#collapseUtilities2"
                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
+                    
                     <span> Government Schemes</span>
                 </a>
                 <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities"
@@ -91,7 +92,17 @@
             <div id="content">
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <div>
+                        <h1 class="p-0">
+                            <div style="color: #4e73df; padding-left:250px; font-size:45px; margin-block:unset;padding-bottom:0px;">
+                                <span>Fineasee</span>
+                                <div class="" style="font-size:8px;padding-left: 150px; color : black; top:-10px">Finance made easy</div>
 
+                            </div>
+                        </h1>
+
+                    </div>
+                    
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -102,7 +113,7 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
+                        
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li >
                             
@@ -318,7 +329,108 @@
                 </div>
                 <div class="container">
                     @RenderBody()
+                    
                 </div>
+                <div class="round hollow" style="text-align:right;">
+                    <a href="#" class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" />Chat</a>
+                </div>
+
+
+                <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar d-none" style="background-color:white">
+
+                    <div class="popup-head">
+                        <div class="popup-head-left pull-left">
+                            <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank" href="https://web.facebook.com/iamgurdeeposahan">
+                                <img class="md-user-image" alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" title="Gurdeep Osahan (Web Designer)" alt="Gurdeep Osahan (Web Designer)">
+                                <h1>Customer Support</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> </small>
+                            </a>
+                        </div>
+                        <div class="popup-head-right pull-right">
+                        </div>
+                    </div>
+
+                    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
+                        <div class="chat_box touchscroll chat_box_colors_a">
+                            <div class="chat_message_wrapper">
+                                <div class="chat_user_avatar">
+                                    <img alt="Gurdeep Osahan" title="" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
+                                </div>
+                                <ul class="chat_message">
+                                    <li>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, eum? </p>
+                                    </li>
+                                    <li>
+                                        <p> Lorem ipsum dolor sit amet.<span class="chat_message_time">13:38</span> </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chat_message_wrapper chat_message_right">
+                                <div class="chat_user_avatar">
+                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
+                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
+                                    </a>
+                                </div>
+                                <ul class="chat_message">
+                                    <li>
+                                        <p>
+                                            <span class="chat_message_time">13:34</span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chat_message_wrapper">
+                                <div class="chat_user_avatar">
+                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
+                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
+                                    </a>
+                                </div>
+                                <ul class="chat_message">
+                                    <li>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque ea mollitia pariatur porro quae sed sequi sint tenetur ut veritatis.https://www.facebook.com/iamgurdeeposahan
+                                            <span class="chat_message_time">23 Jun 1:10am</span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chat_message_wrapper chat_message_right">
+                                <div class="chat_user_avatar">
+                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
+                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
+                                    </a>
+                                </div>
+                                <ul class="chat_message">
+                                    <li>
+                                        <p>  </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                            <span class="chat_message_time">Friday 13:34</span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat_submit_box">
+                        <div class="uk-input-group">
+                            <div class="gurdeep-chat-box">
+                                <span style="vertical-align: sub;" class="uk-input-group-addon">
+                                    <a href="#"><i class="fa fa-smile-o"></i></a>
+                                </span>
+                                <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input">
+                                <span style="vertical-align: sub;" class="uk-input-group-addon">
+                                    <a href="#"><i class="fa fa-camera"></i></a>
+                                </span>
+                            </div>
+
+                            <span class="uk-input-group-addon">
+                                <a href="#"><i class="glyphicon glyphicon-send"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                </aside>
             </div>
             <!-- End of Main Content -->
             <!-- Footer -->

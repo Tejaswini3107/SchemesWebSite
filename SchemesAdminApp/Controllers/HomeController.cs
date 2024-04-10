@@ -25,18 +25,6 @@ namespace SchemesAdminApp.Controllers
         }
 
 
-        public IActionResult HomePage()
-        {
-            try
-            {
-
-                return View();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
         [HttpGet]
         public IActionResult GetSchemesList()
         {

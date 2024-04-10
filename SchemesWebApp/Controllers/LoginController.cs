@@ -27,7 +27,7 @@ namespace SchemesWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                int CustomerId = new LoginManager(_dbContext).GetCustomerLogin(EmailId, password);
+                int CustomerId = new LoginManager(_dbContext).GetAdminLogin(EmailId, password);
                 if (CustomerId != 0)
                 {
                     ViewBag.CustomerId = CustomerId;
