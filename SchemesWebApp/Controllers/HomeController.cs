@@ -5,6 +5,7 @@ using Schemes.Manager;
 using Schemes.Repository;
 using Schemes.ViewModels;
 using SchemesWebApp.Models;
+using System.Configuration;
 using System.Diagnostics;
 
 namespace SchemesWebApp.Controllers
@@ -13,9 +14,10 @@ namespace SchemesWebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly SchemesContext _dbContext;
-
-        public HomeController(LoginManager loginManager, SchemesContext DbContext,ILogger<HomeController> logger)
+        private readonly IConfiguration _configuration;
+        public HomeController(LoginManager loginManager, SchemesContext DbContext,ILogger<HomeController> logger,IConfiguration configuration)
         {
+            _configuration = configuration;
             _logger = logger;
             _dbContext = DbContext;
         }

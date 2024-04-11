@@ -14,7 +14,7 @@
         <main role="main" class="pb-3">
             @RenderBody()
             <div class="round hollow text-center">
-                <a href="#" class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" /> Click Here</a>
+                <a \ class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" /> Chat</a>
             </div>
 
             
@@ -22,7 +22,7 @@
 
                     <div class="popup-head">
                         <div class="popup-head-left pull-left">
-                            <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank" href="https://web.facebook.com/iamgurdeeposahan">
+                            <a Design and Developmenta title="Gurdeep Osahan (Web Designer)">
                                 <img class="md-user-image" alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" title="Gurdeep Osahan (Web Designer)" alt="Gurdeep Osahan (Web Designer)">
                                 <h1>Customer Support</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> </small>
                             </a>
@@ -38,62 +38,26 @@
                                 <div class="chat_user_avatar">
                                         <img alt="Gurdeep Osahan" title="" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
                                 </div>
-                                <ul class="chat_message">
+                                <ul class="chat_message agent-text">
                                     <li>
                                         <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, eum? </p>
                                     </li>
-                                    <li>
-                                        <p> Lorem ipsum dolor sit amet.<span class="chat_message_time">13:38</span> </p>
-                                    </li>
+                                    
                                 </ul>
                             </div>
                             <div class="chat_message_wrapper chat_message_right">
                                 <div class="chat_user_avatar">
-                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                                    </a>
                                 </div>
                                 <ul class="chat_message">
                                     <li>
-                                        <p>
-                                            <span class="chat_message_time">13:34</span>
-                                        </p>
+
+                                    <p class="message-input">
+                                            
+                                     </p>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="chat_message_wrapper">
-                                <div class="chat_user_avatar">
-                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                                    </a>
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque ea mollitia pariatur porro quae sed sequi sint tenetur ut veritatis.https://www.facebook.com/iamgurdeeposahan
-                                            <span class="chat_message_time">23 Jun 1:10am</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="chat_message_wrapper chat_message_right">
-                                <div class="chat_user_avatar">
-                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                                    </a>
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>  </p>
-                                    </li>
-                                    <li>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                            <span class="chat_message_time">Friday 13:34</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
+                          
                         </div>
                     </div>
                     <div class="chat_submit_box">
@@ -103,13 +67,10 @@
                                     <a href="#"><i class="fa fa-smile-o"></i></a>
                                 </span>
                                 <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input">
-                                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                    <a href="#"><i class="fa fa-camera"></i></a>
-                                </span>
                             </div>
 
                             <span class="uk-input-group-addon">
-                                <a href="#"><i class="glyphicon glyphicon-send"></i></a>
+                                <a href="#">Send</a>
                             </span>
                         </div>
                     </div>
@@ -130,9 +91,38 @@
             $("#addClass").click(function () {
                 $('#sidebar_secondary').addClass('popup-box-on');
             });
-
+            $(".open-btn").click(function () {
+                $('#sidebar_secondary').removeClass('d-none');
+            });
             $("#removeClass").click(function () {
                 $('#sidebar_secondary').removeClass('popup-box-on');
+            });
+           
+
+            function updateScrollbar() {
+                $messages.mCustomScrollbar("update").mCustomScrollbar('scrollTo', 'bottom', {
+                    scrollInertia: 10,
+                    timeout: 0
+                });
+            }          
+
+            $('#sidebar_secondary').on('click', 'span.uk-input-group-addon a', function () {
+                var message = $('#submit_message').val(); // Get entered text
+                $('p.message-input').text(message);
+                var targetUrl = 'https://vrwknc12-5000.inc1.devtunnels.ms/bot';
+                $.ajax({
+                    type: 'POST',
+                    url: targetUrl,
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: message }),
+                    success: function (response) {
+                        $('ul.chat_message.agent-text').append('<li><p>' + response + '</p></li>');
+                        
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
             });
         })
     </script>

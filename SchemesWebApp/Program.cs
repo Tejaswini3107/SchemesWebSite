@@ -2,7 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using Schemes.Manager;
 using Schemes.Repository;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost", builder =>
+    {
+        builder.WithOrigins("https://localhost:44326")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SchemesContext>();
@@ -20,7 +28,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseCors("AllowLocalhost");
 app.UseRouting();
 
 app.UseAuthorization();

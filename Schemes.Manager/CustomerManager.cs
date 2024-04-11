@@ -64,9 +64,9 @@ namespace Schemes.Manager
         public async Task TranslationAPI(List<string> textsTotranslate,int schemeID)
         {
             string endpoint = "https://saikiran-translatorservice.cognitiveservices.azure.com/";
-            string subscriptionKey = "";
+            string subscriptionKey = "3276690b2ef842c29b6eee6cef002467";
             string region = "eastus";
-            string[] targetLanguages = { "hi", "ar", "bho", "kn", "ml", "ta", "te","ur" };
+            string[] targetLanguages = { "hi","kn", "ml", "ta", "te","ur" };
             var requestBody = new List<object>();
 
             foreach (string targetLanguage in targetLanguages)
