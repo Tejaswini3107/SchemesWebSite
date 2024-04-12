@@ -27,11 +27,12 @@ namespace SchemesWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                int CustomerId = new LoginManager(_dbContext).GetAdminLogin(EmailId, password);
+                int CustomerId = new LoginManager(_dbContext).GetCustomerLogin(EmailId, password);
+
                 if (CustomerId != 0)
                 {
                     ViewBag.CustomerId = CustomerId;
-                    return RedirectToAction("HomePage", "Home");
+                    return RedirectToAction("HomePage", "Home", new { customerID = CustomerId });
                 }
                 else
                 {
@@ -133,7 +134,7 @@ namespace SchemesWebApp.Controllers
             try
             {
                 //createSession.SetSession(new SessionUser(), "SessionUser");
-                return RedirectToAction("Login");
+                return RedirectToAction("Login","Login");
             }
             catch (Exception ex)
             {

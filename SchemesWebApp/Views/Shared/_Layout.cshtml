@@ -4,12 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SchemesWebApp</title>
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SchemesWebApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-   
+<style>
+    #submit_message{
+            display: block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #6e707e;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #d1d3e2;
+            border-radius: .35rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>   
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -18,17 +37,17 @@
             </div>
 
             
-                <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar d-none" style="background-color:white">
+                <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar d-none" style="background-color:white;right:20px">
 
                     <div class="popup-head">
-                        <div class="popup-head-left pull-left">
-                            <a Design and Developmenta title="Gurdeep Osahan (Web Designer)">
-                                <img class="md-user-image" alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" title="Gurdeep Osahan (Web Designer)" alt="Gurdeep Osahan (Web Designer)">
-                                <h1>Customer Support</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> </small>
-                            </a>
+                        <div class="popup-head-left pull-left chatheader">
+                                <img class="md-user-image" src="https://bootdey.com/img/Content/avatar/avatar1.png" title="Gurdeep Osahan (Web Designer)" alt="Gurdeep Osahan (Web Designer)">
+                        <h1 class="align-content-center" style="margin-top:11px;margin-left:17px;">Customer Support</h1>
                         </div>
                         <div class="popup-head-right pull-right">
-                            
+                        <button type="button" class="close closeBtn " style="color:white;" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         </div>
                     </div>
 
@@ -36,42 +55,25 @@
                         <div class="chat_box touchscroll chat_box_colors_a">
                             <div class="chat_message_wrapper">
                                 <div class="chat_user_avatar">
-                                        <img alt="Gurdeep Osahan" title="" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
                                 </div>
                                 <ul class="chat_message agent-text">
                                     <li>
-                                        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, eum? </p>
+                                        <p> Hello,How Can I help you? </p>
                                     </li>
                                     
                                 </ul>
                             </div>
-                            <div class="chat_message_wrapper chat_message_right">
-                                <div class="chat_user_avatar">
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-
-                                    <p class="message-input">
-                                            
-                                     </p>
-                                    </li>
-                                </ul>
-                            </div>
-                          
                         </div>
                     </div>
                     <div class="chat_submit_box">
-                        <div class="uk-input-group">
-                            <div class="gurdeep-chat-box">
-                                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                    <a href="#"><i class="fa fa-smile-o"></i></a>
-                                </span>
-                                <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input">
-                            </div>
-
-                            <span class="uk-input-group-addon">
-                                <a href="#">Send</a>
+                        <div class="uk-input-group row">
+                            <input  type="text" placeholder="Type a message" id="submit_message"  class="col-7"  style="border-color:dimgrey;margin-left:19px">
+                        <span class="uk-input-group-addon col-3">
+                                <a class="btn btn-primary" href="#">Send</a>
                             </span>
+
+                           
                         </div>
                     </div>
                     </aside>
@@ -97,33 +99,31 @@
             $("#removeClass").click(function () {
                 $('#sidebar_secondary').removeClass('popup-box-on');
             });
-           
 
-            function updateScrollbar() {
-                $messages.mCustomScrollbar("update").mCustomScrollbar('scrollTo', 'bottom', {
-                    scrollInertia: 10,
-                    timeout: 0
-                });
-            }          
 
             $('#sidebar_secondary').on('click', 'span.uk-input-group-addon a', function () {
                 var message = $('#submit_message').val(); // Get entered text
-                $('p.message-input').text(message);
-                var targetUrl = 'https://vrwknc12-5000.inc1.devtunnels.ms/bot';
+
+                $('.chat_box').append('<div class="chat_message_wrapper chat_message_right">' +
+                    '<ul class="chat_message "><li><p>' + message + '</p></li></ul></div>');
+                $('#submit_message').val('');
                 $.ajax({
-                    type: 'POST',
-                    url: targetUrl,
+                    type: 'GET',
+                    url: "Home/Chatbot?message=" + message,
                     contentType: 'application/json',
-                    data: JSON.stringify({ message: message }),
                     success: function (response) {
-                        $('ul.chat_message.agent-text').append('<li><p>' + response + '</p></li>');
-                        
+                        $('.chat_box').append('<div class="chat_message_wrapper"><div class="chat_user_avatar"><img src = "https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image"></div>' +
+                            '<ul class="chat_message"><li><p>' + response + '</p></li></ul></div>');
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
                     }
                 });
             });
+            $(".closeBtn").on('click',function(){
+                $('#sidebar_secondary').addClass('d-none');
+            })
+
         })
     </script>
 </body>

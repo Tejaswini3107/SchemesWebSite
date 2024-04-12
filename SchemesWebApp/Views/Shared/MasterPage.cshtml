@@ -121,7 +121,7 @@
                             <div class="dropdown-container">
                                 <label for="language">Select a language:</label>
                                 <select id="language">
-                                    <option value="en" selected>English</option>
+                                    <option value="en">English</option>
                                     <option value="hi">Hindi</option>
                                     <option value="kn">Kannada</option>
                                     <option value="ml">Malayalam</option>
@@ -271,7 +271,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="~/Home/CustomerProfileDetails?customerID=@ViewBag.CustomerId">
+                                <a class="dropdown-item" id="viewprofile">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     <span class="profileimg">Profile</span>
                                 </a>
@@ -329,21 +329,22 @@
                     @RenderBody()
                     
                 </div>
-                <div class="round hollow" style="text-align:right;">
-                    <a href="#" class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" />Chat</a>
+                <div class="round hollow text-right" style="right:10px">
+                    <a \ class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" /> Chat</a>
                 </div>
 
 
-                <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar d-none" style="background-color:white">
+                <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar d-none" style="background-color:white;right:20px">
 
                     <div class="popup-head">
-                        <div class="popup-head-left pull-left">
-                            <a Design and Developmenta title="Gurdeep Osahan (Web Designer)" target="_blank" href="https://web.facebook.com/iamgurdeeposahan">
-                                <img class="md-user-image" alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" title="Gurdeep Osahan (Web Designer)" alt="Gurdeep Osahan (Web Designer)">
-                                <h1>Customer Support</h1><small><br> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> </small>
-                            </a>
+                        <div class="popup-head-left pull-left chatheader">
+                            <img class="md-user-image" src="https://bootdey.com/img/Content/avatar/avatar1.png" title="Gurdeep Osahan (Web Designer)" alt="Gurdeep Osahan (Web Designer)">
+                            <h1 class="align-content-center" style="margin-top:11px;margin-left:17px;">Customer Support</h1>
                         </div>
                         <div class="popup-head-right pull-right">
+                            <button type="button" class="close closeBtn " style="color:white;" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     </div>
 
@@ -351,81 +352,25 @@
                         <div class="chat_box touchscroll chat_box_colors_a">
                             <div class="chat_message_wrapper">
                                 <div class="chat_user_avatar">
-                                    <img alt="Gurdeep Osahan" title="" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
                                 </div>
-                                <ul class="chat_message">
+                                <ul class="chat_message agent-text">
                                     <li>
-                                        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, eum? </p>
+                                        <p> Hello,How Can I help you? </p>
                                     </li>
-                                    <li>
-                                        <p> Lorem ipsum dolor sit amet.<span class="chat_message_time">13:38</span> </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="chat_message_wrapper chat_message_right">
-                                <div class="chat_user_avatar">
-                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                                    </a>
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>
-                                            <span class="chat_message_time">13:34</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="chat_message_wrapper">
-                                <div class="chat_user_avatar">
-                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                                    </a>
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque ea mollitia pariatur porro quae sed sequi sint tenetur ut veritatis.https://www.facebook.com/iamgurdeeposahan
-                                            <span class="chat_message_time">23 Jun 1:10am</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="chat_message_wrapper chat_message_right">
-                                <div class="chat_user_avatar">
-                                    <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                        <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image">
-                                    </a>
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>  </p>
-                                    </li>
-                                    <li>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                            <span class="chat_message_time">Friday 13:34</span>
-                                        </p>
-                                    </li>
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="chat_submit_box">
-                        <div class="uk-input-group">
-                            <div class="gurdeep-chat-box">
-                                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                    <a href="#"><i class="fa fa-smile-o"></i></a>
-                                </span>
-                                <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input">
-                                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                    <a href="#"><i class="fa fa-camera"></i></a>
-                                </span>
-                            </div>
-
-                            <span class="uk-input-group-addon">
-                                <a href="#"><i class="glyphicon glyphicon-send"></i></a>
+                        <div class="uk-input-group row">
+                            <input type="text" placeholder="Type a message" id="submit_message" class="col-7" style="border-color:dimgrey;margin-left:19px">
+                            <span class="uk-input-group-addon col-3">
+                                <a class="btn btn-primary" href="#">Send</a>
                             </span>
+
+
                         </div>
                     </div>
                 </aside>
@@ -463,7 +408,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="~/Account/LogOut">Logout</a>
+                    <a class="btn btn-primary" href="~/Login/LogOut">Logout</a>
                 </div>
             </div>
         </div>
@@ -471,6 +416,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            var value = "@ViewBag.CustomerId";
+            var lang = "@ViewBag.Selectedlang";
+            document.getElementById('language').value = lang;
             var langCode = $("#selectedlanguage").val();
             $("#schemeName").on('click', function () {
                 $.ajax({
@@ -480,19 +429,52 @@
                     dataType: "html",
 
                     success: function (data) {
-                       
+
                     },
                     error: function (err) {
                         alert(err);
                     }
                 });
             });
+        });   
+                // Event listener for when an option is selected
+        $('#language').on('change', function () {
+            // Get the selected language
+            var selectedLanguage = $("#language").attr('value');
+            // Set the value of an input element with id 'selectedlanguage' to the selected language
+            $("#selectedlanguage").val(selectedLanguage);
+
+            // Get the current URL
+            var currentURL = window.location.href.toString();
+
+            // Define the substring to check
+            var substring = "home/homepage";
+
+            // Check if the current URL contains the substring
+            if (currentURL.toLowerCase().indexOf(substring) !== -1) {
+                // Perform AJAX request
+                $.ajax({
+                    url: "Home/HomePage", // Assuming this is the correct URL
+                    type: 'GET',
+                    dataType: 'html',
+                    data: {
+                        // Pass the selected language as a parameter
+                        selectedlang: selectedLanguage
+                    },
+                    success: function (data) {
+                        // Handle the success response if needed
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors if needed
+                    }
+                });
+            }
         });
 
+           
             $("#disable").hide();
             $(".profileimg").click(function () {
                 $("#disable").show();
-            var value = "@ViewBag.CustomerId";
                 $.ajax({
                 url: "/Home/CustomerProfileDetails?customerID=" + value,
                     type: "GET",
@@ -517,16 +499,42 @@
                     }
                 });
             });
-        document.addEventListener("DOMContentLoaded", function () {
-            var languageDropdown = document.getElementById("language");
-            var selectedLanguageInput = document.getElementById("selectedlanguage");
+            $(function () {
+                $("#addClass").click(function () {
+                    $('#sidebar_secondary').addClass('popup-box-on');
+                });
+                $(".open-btn").click(function () {
+                    $('#sidebar_secondary').removeClass('d-none');
+                });
+                $("#removeClass").click(function () {
+                    $('#sidebar_secondary').removeClass('popup-box-on');
+                });
 
-            // Event listener for when an option is selected
-            languageDropdown.addEventListener("change", function () {
-                var selectedLanguage = languageDropdown.value;
-                selectedLanguageInput.value = selectedLanguage;
+
+                $('#sidebar_secondary').on('click', 'span.uk-input-group-addon a', function () {
+                    var message = $('#submit_message').val(); // Get entered text
+
+                    $('.chat_box').append('<div class="chat_message_wrapper chat_message_right">' +
+                        '<ul class="chat_message "><li><p>' + message + '</p></li></ul></div>');
+                    $('#submit_message').val('');
+                    $.ajax({
+                        type: 'GET',
+                        url: "Home/Chatbot?message=" + message,
+                        contentType: 'application/json',
+                        success: function (response) {
+                            $('.chat_box').append('<div class="chat_message_wrapper"><div class="chat_user_avatar"><img src = "https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image"></div>' +
+                                '<ul class="chat_message"><li><p>' + response + '</p></li></ul></div>');
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                });
+                $(".closeBtn").on('click', function () {
+                    $('#sidebar_secondary').addClass('d-none');
+                })
+
             });
-        });
     </script>
 </body>
 </html>

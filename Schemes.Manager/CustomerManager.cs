@@ -26,9 +26,19 @@ namespace Schemes.Manager
         }
         public bool AddNewScheme(SchemeDetails schemeDetails)
         {
-            var result = new CustomerRepository(_dbContext).AddNewScheme(schemeDetails);
+            var schemeID = new CustomerRepository(_dbContext).AddNewScheme(schemeDetails);
+            var list = new List<string>();
+            list.Add(schemeDetails.NameOftheScheme);
+            list.Add(schemeDetails.Description);
+            list.Add(schemeDetails.EligibilityCriteria);
+            list.Add(schemeDetails.Benefits);
+            list.Add(schemeDetails.Area);
+            list.Add(schemeDetails.DocumentsRequired);
+            list.Add(schemeDetails.ApplyAndLink);
+            list.Add(schemeDetails.AvailableFor);
 
-            return result;
+            TranslationAPI(list, schemeID);
+            return true;
         }
         public List<CustomerDetails> GetCustomersList()
         {
@@ -63,7 +73,7 @@ namespace Schemes.Manager
 
         public async Task TranslationAPI(List<string> textsTotranslate,int schemeID)
         {
-            string endpoint = "https://saikiran-translatorservice.cognitiveservices.azure.com/";
+            string endpoint = "https://api.cognitive.microsofttranslator.com";
             string subscriptionKey = "3276690b2ef842c29b6eee6cef002467";
             string region = "eastus";
             string[] targetLanguages = { "hi","kn", "ml", "ta", "te","ur" };
@@ -97,8 +107,8 @@ namespace Schemes.Manager
 
                             for (int i = 0; i < translations.Count; i++)
                             {
-                                string translatedText = translations[i].Translations.First().Text ?? ""; // Use the first translation as translated text
-                                string translatedLang = translations[i].Translations.First().To ?? ""; // Use the first translation as translated text
+                                string translatedText = translations[i].translations.First().text ?? ""; // Use the first translation as translated text
+                                string translatedLang = translations[i].translations.First().to ?? ""; // Use the first translation as translated text
 
                                 switch (i)
                                 {
@@ -131,8 +141,9 @@ namespace Schemes.Manager
                                         // Handle cases where there are more translations than properties
                                         break;
                                 }
-                                new CustomerRepository(_dbContext).AddNewSchemeByLangCode(schemeData, schemeID, translatedLang);
                             }
+                            new CustomerRepository(_dbContext).AddNewSchemeByLangCode(schemeData, schemeID, targetLanguage);
+
                         }
                     }
                 }

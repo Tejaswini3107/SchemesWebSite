@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Schemes.Manager;
 using Schemes.Repository;
 using Schemes.ViewModels;
 using SchemesWebApp.Models;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
+using System.Net.Http;
+using System.Text;
 
 namespace SchemesWebApp.Controllers
 {
@@ -28,11 +33,12 @@ namespace SchemesWebApp.Controllers
         }
        
         
-        public IActionResult HomePage()
+        public IActionResult HomePage(int customerID=0,string selectedlang="en")
         {
             try
             {
-               
+               ViewBag.CustomerID = customerID;
+                ViewBag.Selectedlang = selectedlang;
                 return View();
             }
             catch (Exception ex)
@@ -108,5 +114,46 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
         }
+        public IActionResult Chatbot(string message="")
+        {
+            string responseMsg ="Hello";
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                HttpContent content = new StringContent("{\"message\": \"" + message + "\"}", Encoding.UTF8, "application/json");
+
+                try
+                {
+
+                    HttpResponseMessage response = httpClient.PostAsync("https://vrwknc12-5000.inc1.devtunnels.ms/bot", content).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = response.Content.ReadAsStringAsync().Result;
+                        var resp = JsonConvert.DeserializeObject<ChatBotResponse>(responseContent);
+                        if (resp != null)
+                        {
+                            responseMsg = resp.Message;
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Failed to make the request. Status code: {response.StatusCode}");
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
+            return Ok(responseMsg);
+
+        }
+
+
+    }
+    public class ChatBotResponse
+    {
+        public string Message { get; set; }
     }
 }

@@ -49,8 +49,8 @@ namespace Schemes.ViewModels
         public string? Area { get; set; }
         public string? DocumentsRequired { get; set; }
         public string? ApplyAndLink { get; set; }
-        public bool? IsActive { get; set; }
         public string? AvailableFor { get; set; }
+        public bool? IsActive { get; set; }
 
     }
     public class RegistrationViewModel
@@ -96,15 +96,22 @@ namespace Schemes.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
     }
-    public class TranslationResponse
+    public class DetectedLanguage
     {
-        public List<TranslationItem> Translations { get; set; }
+        public string language { get; set; }
+        public double score { get; set; }
     }
 
-    public class TranslationItem
+    public class Translation
     {
-        public string Text { get; set; }
-        public string To { get; set; }
+        public string text { get; set; }
+        public string to { get; set; }
+    }
+
+    public class TranslationResponse
+    {
+        public DetectedLanguage detectedLanguage { get; set; }
+        public List<Translation> translations { get; set; }
     }
     public class MultilingualSchemesDataVM
     {

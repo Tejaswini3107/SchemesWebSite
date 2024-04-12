@@ -103,8 +103,9 @@ namespace Schemes.Repository
             }
             return schemeDetailsList;
         }
-        public bool AddNewScheme(SchemeDetails scheme)
+        public int AddNewScheme(SchemeDetails scheme)
         {
+            int schemeID = 0;
             Models.SchemesDetails schemeDetails = new SchemesDetails();
                 schemeDetails.Area = scheme.Area;
                 schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
@@ -141,7 +142,8 @@ namespace Schemes.Repository
             schemeData.DocumentsRequired = scheme.DocumentsRequired;
             schemeData.AvaliableFor = scheme.AvailableFor;
             AddNewSchemeByLangCode(schemeData, details.SchemesDetailID, "en");
-            return true;
+            schemeID = details.SchemesDetailID;
+            return schemeID;
         }
         public bool AddNewSchemeByLangCode(MultilingualSchemesDataVM scheme,int schemeID,string LangCode)
         {
@@ -160,6 +162,7 @@ namespace Schemes.Repository
             schemeDetails.InsertedDate = DateTime.Now;
             schemeDetails.InsertedBy = "Admin";
             _dbContext.MultilingualSchemesData.Add(schemeDetails);
+            _dbContext.SaveChanges();
             return true;
         }
         public bool UpdateScheme(SchemeDetails scheme)

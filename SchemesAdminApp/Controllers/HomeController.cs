@@ -68,7 +68,7 @@ namespace SchemesAdminApp.Controllers
             try
             {
                 var list = new CustomerManager(_dbContext).AddNewScheme(schemeDetails);
-                return View("_GetSchemesList.cshtml", list);
+                return RedirectToAction("GetSchemesList");
             }
             catch (Exception ex)
             {
