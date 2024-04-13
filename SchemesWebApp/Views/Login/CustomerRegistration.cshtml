@@ -61,7 +61,7 @@
                                     <input asp-for="PhoneNumber" type="text" asp-validation-for="PhoneNumber" class="form-control form-control-user" id="PhoneNumber"
                                                placeholder="Phone Number" maxlength="10">
                                     @*@Html.ValidationMessageFor(model=>model.PhoneNumber,"",new {@class ="text-danger"})*@
-                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        <span asp-validation-for="PhoneNumber" class="text-danger" id="PhnNumberError"></span>
                                 </div>
                                     <div class="form-group row" id="sendSMSOTPDiv" style="padding-left:15px">
                                         <input type="button" class="btn btn-primary btn-block w-25" disabled="disabled" id="sendSMSOTPBtn" value="Send OTP" />
