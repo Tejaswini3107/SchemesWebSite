@@ -14,9 +14,9 @@
         <div class="mb-4" style="text-align: center; right:50%">
             <div class="btn btn-primary banks">Banks</div>
             <div class="row pt-3">
-            <a id="SBILoanEMI" class="btn btn-primary col m-2 emibtn"  role="button" data-bs-toggle="button">SBI</a>
-            <a id="UNIONLoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">UNION</a>
-            <a id="KARNATAKALoanEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">KARNATAKA</a>
+            <a id="bankEMI"  class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">SBI</a>
+            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">UNION</a>
+            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" data-bs-toggle="button">KARNATAKA</a>
             </div>
         </div>
     </div>
@@ -54,7 +54,10 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        
+        $(".emiCalculatorDiv #loanAmount").attr("min", "100000");
+        $(".emiCalculatorDiv #loanAmount").attr("max", "10000000");
+        $(".emiCalculatorDiv #interestRate").attr("max", "1");
+        $(".emiCalculatorDiv #interestRate").attr("max", "30");
         document.getElementById("loanAmount").addEventListener("input", function () {
             document.getElementById("loanAmountInput").value = this.value;
         });
@@ -97,11 +100,11 @@
         // document.getElementById("interestAmount").textContent = totalInterest.toFixed(2);
     }
 
-    $(".emibtn").on("click", function () {
-        $(".emiCalculatorDiv").removeClass("d-none");
-        $(".emiCalculatorDiv #loanAmount").attr("min", "200000");
-        $(".emiCalculatorDiv #loanAmount").attr("max", "10000000");
-    });
+    // $(".emibtn").on("click", function () {
+    //     $(".emiCalculatorDiv").removeClass("d-none");
+    //     $(".emiCalculatorDiv #loanAmount").attr("min", "200000");
+    //     $(".emiCalculatorDiv #loanAmount").attr("max", "10000000");
+    // });
 
     if ($("#selectedlanguage").val() == 'hi') {
         $('.banks').text('बैंकों');
@@ -188,7 +191,50 @@
         $('#SBILoanEMI').text('');
         $('#UNIONLoanEMI').text('');
     }
+    $("#bankEMI").on('click',function () {
+        $(".emiCalculatorDiv").addClass("d-none");
 
+        $.ajax({
+            url: "/Home/GetLoanDetails?bankName=" + $('#bankEMI').text(),
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $(".emiCalculatorDiv").addClass("d-none");
+                $(".emiCalculatorDiv #loanAmount").attr("min", data.minLoanAmount);
+                $(".emiCalculatorDiv #loanAmount").attr("max", data.maxloanAmount);
+                $(".emiCalculatorDiv #interestRate").attr("max", data.maxInterestRate);
+                $(".emiCalculatorDiv #interestRate").attr("min", data.minInterestRate);
+                $(".emiCalculatorDiv").removeClass("d-none");
+                document.getElementById("loanAmount").addEventListener("input", function () {
+                    document.getElementById("loanAmountInput").value = this.value;
+                });
+                document.getElementById("interestRate").addEventListener("input", function () {
+                    document.getElementById("interestRateInput").value = this.value;
+                });
+                document.getElementById("loanTenure").addEventListener("input", function () {
+                    document.getElementById("loanTenureInput").value = this.value;
+                });
+                document.getElementById("loanAmountInput").addEventListener("input", function () {
+                    document.getElementById("loanAmount").value = this.value;
+                });
+                document.getElementById("interestRateInput").addEventListener("input", function () {
+                    document.getElementById("interestRate").value = this.value;
+                });
+                document.getElementById("loanTenureInput").addEventListener("input", function () {
+                    document.getElementById("loanTenure").value = this.value;
+                });
+                document.getElementById("loanAmountInput").value = $("#loanAmount").val();
+                document.getElementById("interestRateInput").value = $("#interestRate").val();
+                document.getElementById("loanTenureInput").value = $("#loanTenure").val();
+                calculateEMI();
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+       
+    });
 
 </script>
 

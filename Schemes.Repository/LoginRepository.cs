@@ -69,7 +69,7 @@ namespace Schemes.Repository
                     oTPDetails.SentDetails = EmailId;
                     oTPDetails.OTPType = (int)OTPtypeEnum.RegistrationThroughEmail;
                     oTPDetails.OTP = VerificationCode;
-                    result = SendEmailToUser(EmailId, VerificationCode);
+                    result = SendEmailToUser(EmailId, VerificationCode,true);
 
                 }
                 if (!string.IsNullOrEmpty(PhoneNumber))
@@ -195,14 +195,21 @@ namespace Schemes.Repository
             _dbContext.SaveChanges();
 
         }
-        public bool SendEmailToUser(string emailid,string otp)
+        public bool SendEmailToUser(string emailid,string text,bool IsOTP=false)
         {
             string smtpServer = "smtp.gmail.com";
             string smtpUsername = "tejaswinireddyy0701@gmail.com";
             string smtpPassword = "ufze suca vblq arhh";
-
-            string body = $"Your OTP code is: {otp}";
-            MailMessage mail = new MailMessage(smtpUsername, emailid, otp, body);
+            string body = "";
+            if (IsOTP)
+            {
+              body= $"Your OTP code is: {text}";
+            }
+            else
+            {
+                body = text;
+            }
+            MailMessage mail = new MailMessage(smtpUsername, emailid, text, body);
 
             SmtpClient smtpClient = new SmtpClient(smtpServer)
             {

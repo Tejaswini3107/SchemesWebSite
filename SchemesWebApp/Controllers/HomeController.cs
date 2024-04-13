@@ -39,6 +39,15 @@ namespace SchemesWebApp.Controllers
             {
                ViewBag.CustomerID = customerID;
                 ViewBag.Selectedlang = selectedlang;
+                ViewBag.CustomerName = "";
+                if (customerID > 0)
+                {
+                    CustomerDetails? details = new CustomerManager(_dbContext).GetCustomersList().Where(s => s.CustomerId == customerID).FirstOrDefault();
+                    if (details != null)
+                    {
+                        ViewBag.CustomerName = details.FirstName + details.LastName;
+                    }
+                }
                 return View();
             }
             catch (Exception ex)
@@ -72,12 +81,12 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
         }
-        public IActionResult GetLoanDetails(string Loantype,string bankName)
+        public IActionResult GetLoanDetails(string bankName)
         {
             try
             {
-                LoanDetails details = new CustomerManager(_dbContext).GetLoanDetails(Loantype,bankName);
-                return View(details);
+                LoanDetails details = new CustomerManager(_dbContext).GetLoanDetails(bankName);
+                return Ok(details);
             }
             catch (Exception ex)
             {

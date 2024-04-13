@@ -60,9 +60,9 @@ namespace Schemes.Manager
             var result = new CustomerRepository(_dbContext).UpdateCustomerStatus(customerID);
             return result;
         }
-        public LoanDetails GetLoanDetails(string Loantype, string bankName)
+        public LoanDetails GetLoanDetails(string bankName)
         {
-            var loanDetails = new CustomerRepository(_dbContext).GetLoanDetails(Loantype, bankName);
+            var loanDetails = new CustomerRepository(_dbContext).GetLoanDetails(bankName);
             return loanDetails;
         }
         public List<string> GetLoantypes(string bankName)

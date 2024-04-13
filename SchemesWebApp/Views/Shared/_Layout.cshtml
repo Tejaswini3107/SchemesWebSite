@@ -1,6 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    @{
+        ViewData["Title"] = "Home";
+        Layout = "~/Views/Shared/MasterPage.cshtml";
+    }
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SchemesWebApp</title>
@@ -33,7 +38,7 @@
         <main role="main" class="pb-3">
             @RenderBody()
             <div class="round hollow text-center">
-                <a \ class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" /> Chat</a>
+                <a  class="open-btn" id="addClass"><img src="~/img/chatIcon.png" aria-hidden="true" /> Chat</a>
             </div>
 
             

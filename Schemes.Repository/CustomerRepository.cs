@@ -123,12 +123,14 @@ namespace Schemes.Repository
 
             List<SMSDetails> sMSDetails = new List<SMSDetails>();
             var customersList = GetCustomersList();
+            var text = $"Fineasee:Dear Customer, New Scheme {scheme.NameOftheScheme} is available for: {scheme.AvailableFor} on our website";
             foreach (var customer in customersList)
             {
+                new LoginRepository(_dbContext).SendEmailToUser(customer.EmailId, text, false);
                 sMSDetails.Add(new SMSDetails()
                 {
                     phone_number = customer.PhoneNo,
-                    text_message = $"New Scheme {scheme.NameOftheScheme} is available for: {scheme.AvailableFor} on our website"
+                    text_message = text
                 });
             }
             new LoginRepository(_dbContext).SendOTPAsync(sMSDetails);
@@ -255,10 +257,10 @@ namespace Schemes.Repository
             
             return schemeDetails;
         }
-        public LoanDetails GetLoanDetails(string Loantype, string bankName)
+        public LoanDetails GetLoanDetails(string bankName)
         {
             LoanDetails loanDetails = new LoanDetails();
-            var loanInterestDetails = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName) &&s.LoanType.Contains(Loantype)).FirstOrDefault();
+            var loanInterestDetails = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName)).FirstOrDefault();
             if (loanInterestDetails != null)
             {
                 loanDetails.LoanType = loanInterestDetails.LoanType;
