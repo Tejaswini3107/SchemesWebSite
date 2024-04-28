@@ -59,6 +59,8 @@ namespace SchemesWebApp.Controllers
         {
             try
             {
+                ViewBag.Selectedlang = langCode;
+
                 List<SchemeDetails> list = new CustomerManager(_dbContext).GetSchemesList(name,langCode);
                 ViewBag.AvailableFor = name;
                 return View(list);

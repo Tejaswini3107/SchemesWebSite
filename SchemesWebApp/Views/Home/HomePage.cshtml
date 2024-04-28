@@ -54,6 +54,91 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
+        if ($("#selectedlanguage").val() == 'hi') {
+            $('.banks').text('बैंकों');
+            $('.emiHeader').text('ईएमआई कैलकुलेटर');
+            $('.resultsLbl').text('परिणाम');
+            $('#loanEMITxt').text('ऋण ईएमआई: ₹');
+            $('#TIPTxt').text('कुल देय ब्याज: ₹');
+            $('#TPTxt').text('कुल भुगतान (मूलधन+ब्याज): ₹');
+            $('#loanTenureLbl').text('ऋण अवधि (वर्ष)');
+            $('#interestRateLbl').text('ब्याज दर (%)');
+            $('#loanAmountLbl').text('ऋण राशि(₹)');
+            $('#KARNATAKALoanEMI').text('कर्नाटक');
+            $('#SBILoanEMI').text('स्टे.बैं.इं');
+            $('#UNIONLoanEMI').text('यूनियन');
+
+        }
+        else if ($("#selectedlanguage").val() == 'kn') {
+            $('.banks').text('');
+            $('.emiHeader').text('');
+            $('.resultsLbl').text('');
+            $('#loanEMITxt').text('');
+            $('#TIPTxt').text('');
+            $('#TPTxt').text('');
+            $('#loanTenureLbl').text('');
+            $('#interestRateLbl').text('');
+            $('#loanAmountLbl').text('');
+            $('#KARNATAKALoanEMI').text('');
+            $('#SBILoanEMI').text('');
+            $('#UNIONLoanEMI').text('');
+        }
+        else if ($("#selectedlanguage").val() == 'ml') {
+            $('.banks').text('');
+            $('.emiHeader').text('');
+            $('.resultsLbl').text('');
+            $('#loanEMITxt').text('');
+            $('#TIPTxt').text('');
+            $('#TPTxt').text('');
+            $('#loanTenureLbl').text('');
+            $('#interestRateLbl').text('');
+            $('#loanAmountLbl').text('');
+            $('#KARNATAKALoanEMI').text('');
+            $('#SBILoanEMI').text('');
+            $('#UNIONLoanEMI').text('');
+        }
+        else if ($("#selectedlanguage").val() == 'ta') {
+            $('.banks').text('');
+            $('.emiHeader').text('');
+            $('.resultsLbl').text('');
+            $('#loanEMITxt').text('');
+            $('#TIPTxt').text('');
+            $('#TPTxt').text('');
+            $('#loanTenureLbl').text('');
+            $('#interestRateLbl').text('');
+            $('#loanAmountLbl').text('');
+            $('#KARNATAKALoanEMI').text('');
+            $('#SBILoanEMI').text('');
+            $('#UNIONLoanEMI').text('');
+        }
+        else if ($("#selectedlanguage").val() == 'te') {
+            $('.banks').text('');
+            $('.emiHeader').text('');
+            $('.resultsLbl').text('');
+            $('#loanEMITxt').text('');
+            $('#TIPTxt').text('');
+            $('#TPTxt').text('');
+            $('#loanTenureLbl').text('');
+            $('#interestRateLbl').text('');
+            $('#loanAmountLbl').text('');
+            $('#KARNATAKALoanEMI').text('');
+            $('#SBILoanEMI').text('');
+            $('#UNIONLoanEMI').text('');
+        }
+        else if ($("#selectedlanguage").val() == 'ur') {
+            $('.banks').text('');
+            $('.emiHeader').text('');
+            $('.resultsLbl').text('');
+            $('#loanEMITxt').text('');
+            $('#TIPTxt').text('');
+            $('#TPTxt').text('');
+            $('#loanTenureLbl').text('');
+            $('#interestRateLbl').text('');
+            $('#loanAmountLbl').text('');
+            $('#KARNATAKALoanEMI').text('');
+            $('#SBILoanEMI').text('');
+            $('#UNIONLoanEMI').text('');
+        }
         $(".emiCalculatorDiv #loanAmount").attr("min", "100000");
         $(".emiCalculatorDiv #loanAmount").attr("max", "10000000");
         $(".emiCalculatorDiv #interestRate").attr("max", "1");
@@ -106,96 +191,12 @@
     //     $(".emiCalculatorDiv #loanAmount").attr("max", "10000000");
     // });
 
-    if ($("#selectedlanguage").val() == 'hi') {
-        $('.banks').text('बैंकों');
-        $('.emiHeader').text('ईएमआई कैलकुलेटर');
-        $('.resultsLbl').text('परिणाम');
-        $('#loanEMITxt').text('ऋण ईएमआई: ₹');
-        $('#TIPTxt').text('कुल देय ब्याज: ₹');
-        $('#TPTxt').text('कुल भुगतान (मूलधन+ब्याज): ₹');
-        $('#loanTenureLbl').text('ऋण अवधि (वर्ष)');
-        $('#interestRateLbl').text('ब्याज दर (%)');
-        $('#loanAmountLbl').text('ऋण राशि(₹)');
-        $('#KARNATAKALoanEMI').text('कर्नाटक');
-        $('#SBILoanEMI').text('स्टे.बैं.इं');
-        $('#UNIONLoanEMI').text('यूनियन');
 
-    }
-   else if ($("#selectedlanguage").val() == 'kn') {
-        $('.banks').text('');
-        $('.emiHeader').text('');
-        $('.resultsLbl').text('');
-        $('#loanEMITxt').text('');
-        $('#TIPTxt').text('');
-        $('#TPTxt').text('');
-        $('#loanTenureLbl').text('');
-        $('#interestRateLbl').text('');
-        $('#loanAmountLbl').text('');
-        $('#KARNATAKALoanEMI').text('');
-        $('#SBILoanEMI').text('');
-        $('#UNIONLoanEMI').text('');
-    }
-   else if ($("#selectedlanguage").val() == 'ml') {
-        $('.banks').text('');
-        $('.emiHeader').text('');
-        $('.resultsLbl').text('');
-        $('#loanEMITxt').text('');
-        $('#TIPTxt').text('');
-        $('#TPTxt').text('');
-        $('#loanTenureLbl').text('');
-        $('#interestRateLbl').text('');
-        $('#loanAmountLbl').text('');
-        $('#KARNATAKALoanEMI').text('');
-        $('#SBILoanEMI').text('');
-        $('#UNIONLoanEMI').text('');
-    }
-    else if ($("#selectedlanguage").val() == 'ta') {
-        $('.banks').text('');
-        $('.emiHeader').text('');
-        $('.resultsLbl').text('');
-        $('#loanEMITxt').text('');
-        $('#TIPTxt').text('');
-        $('#TPTxt').text('');
-        $('#loanTenureLbl').text('');
-        $('#interestRateLbl').text('');
-        $('#loanAmountLbl').text('');
-        $('#KARNATAKALoanEMI').text('');
-        $('#SBILoanEMI').text('');
-        $('#UNIONLoanEMI').text('');
-    }
-    else if ($("#selectedlanguage").val() == 'te') {
-        $('.banks').text('');
-        $('.emiHeader').text('');
-        $('.resultsLbl').text('');
-        $('#loanEMITxt').text('');
-        $('#TIPTxt').text('');
-        $('#TPTxt').text('');
-        $('#loanTenureLbl').text('');
-        $('#interestRateLbl').text('');
-        $('#loanAmountLbl').text('');
-        $('#KARNATAKALoanEMI').text('');
-        $('#SBILoanEMI').text('');
-        $('#UNIONLoanEMI').text('');
-    }
-   else if ($("#selectedlanguage").val() == 'ur') {
-        $('.banks').text('');
-        $('.emiHeader').text('');
-        $('.resultsLbl').text('');
-        $('#loanEMITxt').text('');
-        $('#TIPTxt').text('');
-        $('#TPTxt').text('');
-        $('#loanTenureLbl').text('');
-        $('#interestRateLbl').text('');
-        $('#loanAmountLbl').text('');
-        $('#KARNATAKALoanEMI').text('');
-        $('#SBILoanEMI').text('');
-        $('#UNIONLoanEMI').text('');
-    }
-    $("#bankEMI").on('click',function () {
+    $(".emibtn").on('click', function () {
         $(".emiCalculatorDiv").addClass("d-none");
 
         $.ajax({
-            url: "/Home/GetLoanDetails?bankName=" + $('#bankEMI').text(),
+            url: "/Home/GetLoanDetails?bankName=" + $(this).text(),
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (data) {

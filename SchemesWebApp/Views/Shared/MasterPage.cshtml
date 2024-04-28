@@ -423,52 +423,24 @@
     </div>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+        // $(document).ready(function () {
 
-            var value = @ViewBag.CustomerID;
+            var customerID = @ViewBag.CustomerID;
             var lang = ""+"@ViewBag.Selectedlang";
             document.getElementById('language').value = lang;
-            var langCode = $("#selectedlanguage").val();
-            $("#schemeName").on('click', function () {
-                $.ajax({
-                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "langCode=" + langCode,
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "html",
-
-                    success: function (data) {
-
-                    },
-                    error: function (err) {
-                        alert(err);
-                    }
-                });
-            });
-        });   
+        
+        // }); 
                 // Event listener for when an option is selected
         $('#language').on('change', function () {
             // Get the selected language
-            var selectedLanguage = $("#language").attr('value');
+            var selectedLanguage = document.getElementById('language').value;
             // Set the value of an input element with id 'selectedlanguage' to the selected language
             $("#selectedlanguage").val(selectedLanguage);
 
-            // Get the current URL
-            var currentURL = window.location.href.toString();
-
-            // Define the substring to check
-            var substring = "home/homepage";
-
-            // Check if the current URL contains the substring
-            if (currentURL.toLowerCase().indexOf(substring) !== -1) {
-                // Perform AJAX request
                 $.ajax({
-                    url: "Home/HomePage", // Assuming this is the correct URL
+                url: "/Home/HomePage?customerID=" + customerID + "&selectedlang=" + lang, // Assuming this is the correct URL
                     type: 'GET',
                     dataType: 'html',
-                    data: {
-                        // Pass the selected language as a parameter
-                        selectedlang: selectedLanguage
-                    },
                     success: function (data) {
                         // Handle the success response if needed
                     },
@@ -476,37 +448,25 @@
                         // Handle errors if needed
                     }
                 });
-            }
         });
+    $("#schemeName").on('click', function () {
+            $.ajax({
+                url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + lang,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
 
+                success: function (data) {
+
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        });
            
             $("#disable").hide();
-        // $("#viewprofile").click(function () {
-        //         $("#disable").show();
-        //         $.ajax({
-        //         url: "/Home/CustomerProfileDetails?customerID=" + @ViewBag.CustomerID,
-        //             type: "GET",
-        //             data: value,
-        //             contentType: "application/json; charset=utf-8",
-        //             dataType: "Json",
-
-        //             success: function (data) {
-        //                 data = JSON.parse(data);
-        //                 var empData = '';
-        //                 $(data).each(function (key, value) {
-        //                 $('#firstName').html(value.FirstName);
-        //                 $('#lastName').html(value.LastName);
-        //                 $('#email').html(value.EmailId);
-        //                 $('#phno').html(value.PhoneNo);
-        //                 $('#dob').html(value.DateOfBirth);
-        //                 });
-        //                 $(".container-fluid").css("display", "none");
-        //             },
-        //             error: function (err) {
-        //                 alert(err);
-        //             }
-        //         });
-        //     });
+        
             $(function () {
                 $("#addClass").click(function () {
                     $('#sidebar_secondary').addClass('popup-box-on');
