@@ -55,6 +55,11 @@ namespace Schemes.Manager
             var result = new CustomerRepository(_dbContext).UpdateScheme(schemeDetails);
             return result;
         }
+        public bool DeleteScheme(int id)
+        {
+            var result = new CustomerRepository(_dbContext).UpdateSchemeStatus(id);
+            return result;
+        }
         public bool UpdateCustomerStatus(int customerID)
         {
             var result = new CustomerRepository(_dbContext).UpdateCustomerStatus(customerID);
@@ -70,7 +75,27 @@ namespace Schemes.Manager
             var types = new CustomerRepository(_dbContext).GetLoantypes(bankName);
             return types;
         }
-
+        public List<LoanDetails> GetAllBanksList()
+        {
+            List<LoanDetails> loanDetails = new CustomerRepository(_dbContext).GetLoanDetailsList();
+            return loanDetails;
+        }
+        public bool AddBanksLoanDetails(LoanDetails loanDetails)
+        {
+            var schemeID = new CustomerRepository(_dbContext).AddLoanDetails(loanDetails);
+            
+            return true;
+        }
+        public LoanDetails? GetLoanDetailsByID(int Id)
+        {
+            var details = new CustomerRepository(_dbContext).GetLoanDetailsList().Where(s=>s.LoanInterestDetailID==Id).FirstOrDefault();
+            return details;
+        }
+        public bool UpdateLoanDetails(LoanDetails loanDetails)
+        {
+            var result = new CustomerRepository(_dbContext).UpdateLoanDetails(loanDetails);
+            return result;
+        }
         public async Task TranslationAPI(List<string> textsTotranslate,int schemeID)
         {
             string endpoint = "https://api.cognitive.microsofttranslator.com";
@@ -148,6 +173,12 @@ namespace Schemes.Manager
                     }
                 }
             }
+        }
+        public bool CreateNewAdmin(AdminRegistrationVM adminRegistrationVM)
+        {
+            var schemeID = new CustomerRepository(_dbContext).CreateNewAdmin(adminRegistrationVM);
+
+            return true;
         }
     }
 }

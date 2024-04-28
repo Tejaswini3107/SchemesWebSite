@@ -22,15 +22,15 @@ namespace SchemesAdminApp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string userName, string password)
+        public IActionResult Login(AdminLoginVM adminLoginVM)
         {
             if (ModelState.IsValid)
             {
-                int CustomerId = new LoginManager(_dbContext).GetAdminLogin(userName, password);
+                int CustomerId = new LoginManager(_dbContext).GetAdminLogin(adminLoginVM.UserName, adminLoginVM.Password);
                 if (CustomerId != 0)
                 {
                     ViewBag.CustomerId = CustomerId;
-                    return RedirectToAction("HomePage", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -41,17 +41,17 @@ namespace SchemesAdminApp.Controllers
             return BadRequest();
         }
 
-        public IActionResult CustomerRegistration()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CustomerRegistration(RegistrationViewModel registrationViewModel)
-        {
-            new LoginManager(_dbContext).CustomerRegistration(registrationViewModel);
-            return RedirectToAction("Login", "Login");
+        //public IActionResult CustomerRegistration()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CustomerRegistration(RegistrationViewModel registrationViewModel)
+        //{
+        //    new LoginManager(_dbContext).CustomerRegistration(registrationViewModel);
+        //    return RedirectToAction("Login", "Login");
 
-        }
+        //}
     }
 }

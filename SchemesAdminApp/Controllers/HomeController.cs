@@ -94,14 +94,126 @@ namespace SchemesAdminApp.Controllers
         {
             try
             {
-                
+
                 new CustomerManager(_dbContext).UpdateScheme(schemeDetails);
-                return RedirectToAction("Index");
+                return RedirectToAction("GetSchemesList");
+                //return RedirectToAction("GetPersonalInfo", new { Id = UpdatedId });
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        
+        [HttpGet]
+        public IActionResult DeleteScheme(int id)
+        {
+            try
+            {
+                
+                new CustomerManager(_dbContext).DeleteScheme(id);
+                return RedirectToAction("GetSchemesList");
                 //return RedirectToAction("GetPersonalInfo", new { Id = UpdatedId });
             }
             catch (Exception ex)
             {
                 return null ;
+            }
+        }
+        public IActionResult GetBanksLoanList()
+        {
+            try
+            {
+                var list = new CustomerManager(_dbContext).GetAllBanksList();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        public IActionResult AddBanksLoanDetails()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost]
+        public IActionResult AddBanksLoanDetails(LoanDetails LoanDetails)
+        {
+            try
+            {
+                var list = new CustomerManager(_dbContext).AddBanksLoanDetails(LoanDetails);
+                return RedirectToAction("GetBanksLoanList");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        public IActionResult UpdateBanksLoanDetails(int id)
+        {
+            try
+            {
+                var details = new CustomerManager(_dbContext).GetLoanDetailsByID(id);
+                return View(details);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+        [HttpPost]
+        public IActionResult UpdateBanksLoanDetails(LoanDetails LoanDetails)
+        {
+            try
+            {
+
+                new CustomerManager(_dbContext).UpdateLoanDetails(LoanDetails);
+                return RedirectToAction("GetBanksLoanList");
+                //return RedirectToAction("GetPersonalInfo", new { Id = UpdatedId });
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CreateNewAdmin()
+        {
+            try
+            {
+
+               
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        [HttpPost]
+        public IActionResult CreateNewAdmin(AdminRegistrationVM adminRegistrationVM )
+        {
+            try
+            {
+
+                new CustomerManager(_dbContext).CreateNewAdmin(adminRegistrationVM);
+                return RedirectToAction("Index");
+                //return RedirectToAction("GetPersonalInfo", new { Id = UpdatedId });
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

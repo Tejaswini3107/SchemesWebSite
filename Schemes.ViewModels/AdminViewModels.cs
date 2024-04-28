@@ -9,8 +9,8 @@ namespace Schemes.ViewModels
 {
     public class AdminLoginVM
     {
-        [Required(ErrorMessage = "UserName is required")]
-        public string? EmailId { get; set; }
+        //[Required(ErrorMessage = "UserName is required")]
+        public string UserName { get; set; }
             
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
@@ -25,5 +25,18 @@ namespace Schemes.ViewModels
         public string EmailId { get; set; }
         public string PhoneNo { get; set; }
         public List<CustomerDetails> customerDetails { get; set; }
+    }
+    public class AdminRegistrationVM
+    {
+        
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailId { get; set; }
+        public string PhoneNo { get; set; }
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
     }
 }

@@ -83,6 +83,7 @@ namespace Schemes.ViewModels
     }
     public class LoanDetails
     {
+        public int? LoanInterestDetailID {  get; set; }
         public string BankName { get; set; }
         public string LoanType { get; set; }
         public string MinLoanAmount { get; set; }

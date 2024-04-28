@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Schemes.Manager;
 using Schemes.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<SchemesContext>();
+builder.Services.AddScoped<LoginManager>();
 
 builder.Services.AddControllersWithViews();
 
@@ -26,6 +28,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{controller=Login}/{action=Login}");
 
 app.Run();

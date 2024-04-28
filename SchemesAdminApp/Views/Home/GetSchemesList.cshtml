@@ -8,28 +8,31 @@
 
 
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NameOftheScheme)
+                Scheme ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Name Of the Scheme
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EligibilityCriteria)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Benefits)
+                Eligibility Criteria
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Area)
+               Benefits
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DocumentsRequired)
+                Area
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApplyAndLink)
+               Documents Required
+            </th>
+            <th>
+                Apply And Link
             </th>
             <th></th>
         </tr>
@@ -37,6 +40,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchemesDetailID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NameOftheScheme)
             </td>
@@ -58,7 +64,13 @@
             <td>
                     @Html.Raw(item.ApplyAndLink)
             </td>
+            <td>
+                    @Html.ActionLink("Edit", "UpdateScheme", new { id = item.SchemesDetailID })
+
+                    @Html.ActionLink("Delete", "DeleteScheme", new { id = item.SchemesDetailID }) 
+
+            </td>
         </tr>
 }
-    </tbody>
+    </tbody>    
 </table>

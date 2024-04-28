@@ -1,9 +1,12 @@
-﻿using Schemes.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Schemes.Models;
+using Schemes.Repository.Migrations;
 using Schemes.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static Schemes.ViewModels.Enums;
 
@@ -31,6 +34,7 @@ namespace Schemes.Repository
                 schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
                 schemeDetails.Description = scheme.Description;
                 schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+                schemeDetails.AvailableFor = scheme.AvaliableFor;
 
                 schemeDetailsList.Add(schemeDetails);
             }
@@ -83,7 +87,7 @@ namespace Schemes.Repository
         public List<SchemeDetails> GetAllSchemesList()
         {
             List<SchemeDetails> schemeDetailsList = new List<SchemeDetails>();
-            var details = _dbContext.SchemesDetails.ToList();
+            var details = _dbContext.SchemesDetails.Where(s=>s.IsActive==true).ToList();
             foreach (var scheme in details)
             {
                 SchemeDetails schemeDetails = new SchemeDetails();
@@ -174,7 +178,9 @@ namespace Schemes.Repository
             if (details != null)
             {
                 details.Area = scheme.Area;
-                details.ApplyAndLink = scheme.ApplyAndLink;
+                if(scheme.ApplyAndLink !=null ) {
+                  details.ApplyAndLink=  ReplaceUrlsWithLinks(scheme.ApplyAndLink);
+                }
                 details.NameOftheScheme = scheme.NameOftheScheme;
                 details.Benefits = scheme.Benefits;
                 details.EligibilityCriteria = scheme.EligibilityCriteria;
@@ -253,6 +259,7 @@ namespace Schemes.Repository
                 schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
                 schemeDetails.Description = scheme.Description;
                 schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+                schemeDetails.AvailableFor = scheme.AvaliableFor;
             }
             
             return schemeDetails;
@@ -269,14 +276,130 @@ namespace Schemes.Repository
                 loanDetails.MinLoanAmount = loanInterestDetails.MinLoanAmount;
                 loanDetails.MaxInterestRate = loanInterestDetails.MaxInterestRate;
                 loanDetails.MinInterestRate = loanInterestDetails.MinInterestRate;
+
             }
 
             return loanDetails;
+        }
+        public List<LoanDetails> GetLoanDetailsList()
+        {
+            List<LoanDetails> list = new List<LoanDetails>();
+            var loanInterestDetailsList = _dbContext.LoanInterestDetails.ToList();
+            if (loanInterestDetailsList.Count >0)
+            {
+                foreach (var loanInterestDetails in loanInterestDetailsList)
+                {
+                    LoanDetails loanDetails = new LoanDetails();
+                    loanDetails.LoanType = loanInterestDetails.LoanType;
+                    loanDetails.LoanInterestDetailID = loanInterestDetails.LoanInterestDetailID;
+                    loanDetails.BankName = loanInterestDetails.BankName;
+                    loanDetails.MaxloanAmount = loanInterestDetails.MaxloanAmount;
+                    loanDetails.MinLoanAmount = loanInterestDetails.MinLoanAmount;
+                    loanDetails.MaxInterestRate = loanInterestDetails.MaxInterestRate;
+                    loanDetails.MinInterestRate = loanInterestDetails.MinInterestRate;
+                    list.Add(loanDetails);
+                }
+
+            }
+
+            return list;
+        }
+        public bool AddLoanDetails(LoanDetails loanInterestDetails)
+        {
+            LoanInterestDetails loanDetails = new LoanInterestDetails();
+            if (loanInterestDetails != null)
+            {
+                loanDetails.LoanType = loanInterestDetails.LoanType;
+                loanDetails.BankName = loanInterestDetails.BankName;
+                loanDetails.MaxloanAmount = loanInterestDetails.MaxloanAmount;
+                loanDetails.MinLoanAmount = loanInterestDetails.MinLoanAmount;
+                loanDetails.MaxInterestRate = loanInterestDetails.MaxInterestRate;
+                loanDetails.MinInterestRate = loanInterestDetails.MinInterestRate;
+                loanDetails.InsertedBy = "Admin";
+                loanDetails.InsertedDate = DateTime.Now;
+                _dbContext.LoanInterestDetails.Add(loanDetails);
+                _dbContext.SaveChanges();
+                List<SMSDetails> sMSDetails = new List<SMSDetails>();
+                var customersList = GetCustomersList();
+                var text = $"Fineasee:Dear Customer,{loanDetails.BankName} bank is providing Loans For {loanDetails.LoanType} at interest rates starting at {loanDetails.MinInterestRate} and is available on our website";
+                foreach (var customer in customersList)
+                {
+                    new LoginRepository(_dbContext).SendEmailToUser(customer.EmailId, text, false);
+                    sMSDetails.Add(new SMSDetails()
+                    {
+                        phone_number = customer.PhoneNo,
+                        text_message = text
+                    });
+                }
+                new LoginRepository(_dbContext).SendOTPAsync(sMSDetails);
+                return true;
+            }
+
+            return false;
+        }
+        public bool UpdateLoanDetails(LoanDetails loanInterestDetails)
+        {
+
+            var loanDetails = _dbContext.LoanInterestDetails.Where(s => s.LoanInterestDetailID == loanInterestDetails.LoanInterestDetailID).FirstOrDefault();
+            if (loanDetails != null)
+            {
+                loanDetails.LoanType = loanInterestDetails.LoanType;
+                loanDetails.BankName = loanInterestDetails.BankName;
+                loanDetails.MaxloanAmount = loanInterestDetails.MaxloanAmount;
+                loanDetails.MinLoanAmount = loanInterestDetails.MinLoanAmount;
+                loanDetails.MaxInterestRate = loanInterestDetails.MaxInterestRate;
+                loanDetails.MinInterestRate = loanInterestDetails.MinInterestRate;
+                loanDetails.UpdatedDate = DateTime.Now;
+                loanDetails.UpdatedBy = "Admin";
+                _dbContext.SaveChanges();
+                return true;
+            }
+            return false;
         }
         public List<string> GetLoantypes(string bankName)
         {
             var loanTypesList = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName)).Select(e=>e.LoanType).ToList();
             return loanTypesList;
+        }
+
+        public static string ReplaceUrlsWithLinks(string text)
+        {
+            string pattern = @"(?<=(^|\s))(https?://\S+)";
+            Regex regex = new Regex(pattern);
+
+            string replacedText = regex.Replace(text, match =>
+            {
+                string url = match.Value;
+                return $"<a class=\"btn btn-link\" href=\"{url}\">{url}</a>";
+            });
+
+            return replacedText;
+        }
+        public bool CreateNewAdmin(AdminRegistrationVM adminRegistrationVM)
+        {
+            AdminLogin adminLogin = new AdminLogin();
+            Admin admin = new Admin();
+            if (adminRegistrationVM != null)
+            {
+                adminLogin.UserName = adminRegistrationVM.UserName;
+                adminLogin.Password = adminRegistrationVM.Password;
+                admin.EmailId= adminRegistrationVM.EmailId;
+                admin.PhoneNo = adminRegistrationVM.PhoneNo;
+                admin.FirstName = adminRegistrationVM.FirstName;
+                admin.LastName = adminRegistrationVM.LastName;
+                admin.InsertedBy = "Admin";
+                admin.InsertedDate = DateTime.Now;
+                _dbContext.Admin.Add(admin);
+                _dbContext.SaveChanges();
+                adminLogin.AdminId = admin.AdminId;
+                adminLogin.InsertedBy = "Admin";
+                adminLogin.InsertedDate = DateTime.Now;
+                _dbContext.AdminLogin.Add(adminLogin);
+                _dbContext.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
     }
 }
