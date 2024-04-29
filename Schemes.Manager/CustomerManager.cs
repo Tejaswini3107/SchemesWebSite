@@ -19,6 +19,11 @@ namespace Schemes.Manager
             List<SchemeDetails> schemeDetails = new CustomerRepository(_dbContext).GetSchemesList(name);
             return schemeDetails;
         }
+        public List<SchemeDetails> GetSchemesListByLangCode(string name, string langCode)
+        {
+            List<SchemeDetails> schemeDetails = new CustomerRepository(_dbContext).GetSchemesListByLangCode(name, langCode);
+            return schemeDetails;
+        }
         public List<SchemeDetails> GetAllSchemesList()
         {
             List<SchemeDetails> schemeDetails = new CustomerRepository(_dbContext).GetAllSchemesList();

@@ -39,6 +39,18 @@
             transform: translateY(-50%);
         }
     </style>
+    @{
+        var id = ViewBag.CustomerID;
+        int customerId = 0;
+        if (int.TryParse(id, out customerId))
+    {
+        // Conversion succeeded, customerId now holds the integer value
+    }
+    else
+    {
+        // Conversion failed, handle the error or set a default value
+    }
+    }
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -69,9 +81,9 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" href="/Home/GetSchemesList?name=Farmers">Farmers</a>
-                        <a class="collapse-item" href="/Home/GetSchemesList?name=Students">Students</a>
-                        <a class="collapse-item" href="/Home/GetSchemesList?name=Backward Caste">Backward Caste</a>
+                        <a class="collapse-item" id="schemeName">Farmers</a>
+                        <a class="collapse-item" id="schemeName">Students</a>
+                        <a class="collapse-item" id="schemeName">Backward Caste</a>
                     </div>
                 </div>
 
@@ -80,7 +92,7 @@
             
             
             <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block"></hr>
+            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -273,7 +285,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                 @if(ViewBag.CustomerID>0)
+                                 @if(customerId>0)
                                  {
                                 <a class="dropdown-item" id="viewprofile">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -283,8 +295,9 @@
                                 <a class="dropdown-item" href="~/Login/LogOut" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
-                                </a>
-                                <a class="dropdown-item" href="~/Home/InactivateCustomer?customerID=@ViewBag.CustomerId" data-toggle="modal" data-target="#logoutModal">
+                                    </a>
+
+                                    <a class="dropdown-item" href="~/Home/InactivateCustomer?customerID=@customerId" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Deactivate Account
                                     </a>
@@ -421,60 +434,98 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="langaugeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary okbtn" type="button" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
-        // $(document).ready(function () {
+        var lang = "";
+        $(document).ready(function () {
+            lang = "@ViewBag.Selectedlang";
+            var selectedLanguage = lang;
 
-            var customerID = @ViewBag.CustomerID;
-            var lang = ""+"@ViewBag.Selectedlang";
-            document.getElementById('language').value = lang;
-        
-        // }); 
-                // Event listener for when an option is selected
-        $('#language').on('change', function () {
-            // Get the selected language
-            var selectedLanguage = document.getElementById('language').value;
-            // Set the value of an input element with id 'selectedlanguage' to the selected language
-            $("#selectedlanguage").val(selectedLanguage);
+            $('#language').on('change', function () {
+                selectedLanguage = document.getElementById('language').value;
+                $("#selectedlanguage").val(selectedLanguage);
+                $("#langaugeModal").modal('show');
+                $("#langaugeModal").find(".modal-body").html("Language Changed to " + document.getElementById('language').value);
+                $('#language').val(selectedLanguage);
+            });
+            $("#langaugeModal .okbtn").on("click", function () {
+                var currentURL = window.location.href.toString();
 
-                $.ajax({
-                url: "/Home/HomePage?customerID=" + customerID + "&selectedlang=" + lang, // Assuming this is the correct URL
-                    type: 'GET',
-                    dataType: 'html',
-                    success: function (data) {
-                        // Handle the success response if needed
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle errors if needed
-                    }
-                });
-        });
-    $("#schemeName").on('click', function () {
-            $.ajax({
-                url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + lang,
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "html",
+                // Define the substring to check
+                var substring = "home/homepage";
 
-                success: function (data) {
+                // Check if the current URL contains the substring
+                if (currentURL.toLowerCase().indexOf(substring) !== -1) {
+                    $.ajax({
+                        url: "/Home/HomePage?customerID=" + @customerId + "&selectedlang=" + selectedLanguage,
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "html",
+                        success: function (data) {
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + selectedLanguage,
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "html",
 
-                },
-                error: function (err) {
-                    alert(err);
+                        success: function (data) {
+
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
                 }
             });
-        });
-           
+            $("#schemeName").on('click', function () {
+                $.ajax({
+                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + selectedLanguage,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (data) {
+
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            });
+
             $("#disable").hide();
-        
+
             $(function () {
                 $("#addClass").click(function () {
                     $('#sidebar_secondary').addClass('popup-box-on');
                 });
                 $(".open-btn").click(function () {
                     $('#sidebar_secondary').removeClass('d-none');
-                $('.chatButtonDiv').addClass('d-none');
-                
+                    $('.chatButtonDiv').addClass('d-none');
+
                 });
                 $("#removeClass").click(function () {
                     $('#sidebar_secondary').removeClass('popup-box-on');
@@ -507,6 +558,10 @@
                 });
 
             });
+            $('#sidebarToggle').click(function () {
+                $('#accordionSidebar').toggleClass('sidebar-hidden');
+            });
+        });
     </script>
 </body>
 </html>

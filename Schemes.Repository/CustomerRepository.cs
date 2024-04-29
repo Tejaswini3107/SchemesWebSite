@@ -43,7 +43,7 @@ namespace Schemes.Repository
         public List<SchemeDetails>? GetSchemesListByLangCode(string name, string langCode)
         {
             List<SchemeDetails>? schemeDetailsList = new List<SchemeDetails>();
-            var schemeDetailsFromDB = _dbContext.MultilingualSchemesData.Where(s => s.AvaliableFor.Contains(name)&&s.IsActive == true).ToList();
+            var schemeDetailsFromDB = _dbContext.SchemesDetails.Where(s => s.AvaliableFor.Contains(name)&&s.IsActive == true).ToList();
             if (schemeDetailsFromDB != null)
             {
                 var details = _dbContext.MultilingualSchemesData.Where(s => s.AvaliableFor.Contains(name) && s.LangCode == langCode && s.IsActive == true).ToList();

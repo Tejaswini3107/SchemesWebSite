@@ -1731,15 +1731,15 @@ pre code {
 }
 
 .table .thead-dark th {
-  color: #fff;
-  background-color: #5a5c69;
-  border-color: #6c6e7e;
+    color: #fff;
+    background-color: #4e73df;
+    border-color: #6c6e7e;
 }
 
 .table .thead-light th {
-  color: #6e707e;
-  background-color: #eaecf4;
-  border-color: #e3e6f0;
+    color: #6e707e;
+    background-color: #4e73df;
+    border-color: #e3e6f0;
 }
 
 .table-dark {

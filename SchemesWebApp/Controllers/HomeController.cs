@@ -37,12 +37,12 @@ namespace SchemesWebApp.Controllers
         {
             try
             {
-               ViewBag.CustomerID = customerID;
+                ViewBag.CustomerID = ""+customerID;
                 ViewBag.Selectedlang = selectedlang;
                 ViewBag.CustomerName = "";
                 if (customerID > 0)
                 {
-                    CustomerDetails? details = new CustomerManager(_dbContext).GetCustomersList().Where(s => s.CustomerId == customerID).FirstOrDefault();
+                    CustomerDetails ? details = new CustomerManager(_dbContext).GetCustomersList().Where(s => s.CustomerId == customerID).FirstOrDefault();
                     if (details != null)
                     {
                         ViewBag.CustomerName = details.FirstName + details.LastName;
@@ -61,7 +61,7 @@ namespace SchemesWebApp.Controllers
             {
                 ViewBag.Selectedlang = langCode;
 
-                List<SchemeDetails> list = new CustomerManager(_dbContext).GetSchemesList(name,langCode);
+                List<SchemeDetails> list = new CustomerManager(_dbContext).GetSchemesListByLangCode(name,langCode);
                 ViewBag.AvailableFor = name;
                 return View(list);
             }

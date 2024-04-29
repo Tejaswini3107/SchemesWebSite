@@ -54,7 +54,9 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        if ($("#selectedlanguage").val() == 'hi') {
+        $("#accordionSidebar").removeClass("d-none");
+
+        if ($("#language").val() == "hi") {
             $('.banks').text('बैंकों');
             $('.emiHeader').text('ईएमआई कैलकुलेटर');
             $('.resultsLbl').text('परिणाम');
@@ -69,7 +71,7 @@
             $('#UNIONLoanEMI').text('यूनियन');
 
         }
-        else if ($("#selectedlanguage").val() == 'kn') {
+        else if ($("#language").val() == "kn") {
             $('.banks').text('');
             $('.emiHeader').text('');
             $('.resultsLbl').text('');
@@ -83,7 +85,7 @@
             $('#SBILoanEMI').text('');
             $('#UNIONLoanEMI').text('');
         }
-        else if ($("#selectedlanguage").val() == 'ml') {
+        else if ($("#language").val() == "ml") {
             $('.banks').text('');
             $('.emiHeader').text('');
             $('.resultsLbl').text('');
@@ -97,7 +99,7 @@
             $('#SBILoanEMI').text('');
             $('#UNIONLoanEMI').text('');
         }
-        else if ($("#selectedlanguage").val() == 'ta') {
+        else if ($("#language").val() == "ta") {
             $('.banks').text('');
             $('.emiHeader').text('');
             $('.resultsLbl').text('');
@@ -111,7 +113,7 @@
             $('#SBILoanEMI').text('');
             $('#UNIONLoanEMI').text('');
         }
-        else if ($("#selectedlanguage").val() == 'te') {
+        else if ($("#language").val() == "te") {
             $('.banks').text('');
             $('.emiHeader').text('');
             $('.resultsLbl').text('');
@@ -125,7 +127,7 @@
             $('#SBILoanEMI').text('');
             $('#UNIONLoanEMI').text('');
         }
-        else if ($("#selectedlanguage").val() == 'ur') {
+        else if ($("#language").val() == "ur") {
             $('.banks').text('');
             $('.emiHeader').text('');
             $('.resultsLbl').text('');
