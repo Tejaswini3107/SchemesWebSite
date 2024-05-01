@@ -52,95 +52,10 @@
             </div>
   </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
+<script>
         $("#accordionSidebar").removeClass("d-none");
 
-        if ($("#language").val() == "hi") {
-            $('.banks').text('बैंकों');
-            $('.emiHeader').text('ईएमआई कैलकुलेटर');
-            $('.resultsLbl').text('परिणाम');
-            $('#loanEMITxt').text('ऋण ईएमआई: ₹');
-            $('#TIPTxt').text('कुल देय ब्याज: ₹');
-            $('#TPTxt').text('कुल भुगतान (मूलधन+ब्याज): ₹');
-            $('#loanTenureLbl').text('ऋण अवधि (वर्ष)');
-            $('#interestRateLbl').text('ब्याज दर (%)');
-            $('#loanAmountLbl').text('ऋण राशि(₹)');
-            $('#KARNATAKALoanEMI').text('कर्नाटक');
-            $('#SBILoanEMI').text('स्टे.बैं.इं');
-            $('#UNIONLoanEMI').text('यूनियन');
-
-        }
-        else if ($("#language").val() == "kn") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if ($("#language").val() == "ml") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if ($("#language").val() == "ta") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if ($("#language").val() == "te") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if ($("#language").val() == "ur") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
+       
         $(".emiCalculatorDiv #loanAmount").attr("min", "100000");
         $(".emiCalculatorDiv #loanAmount").attr("max", "10000000");
         $(".emiCalculatorDiv #interestRate").attr("max", "1");
@@ -168,7 +83,6 @@
         document.getElementById("loanTenureInput").value = document.getElementById("loanTenure").value;
         calculateEMI();
 
-    })
     function calculateEMI() {
         let principal = parseFloat(document.getElementById("loanAmountInput").value);
         let rate = parseFloat(document.getElementById("interestRateInput").value) / 1200; // Monthly interest rate
