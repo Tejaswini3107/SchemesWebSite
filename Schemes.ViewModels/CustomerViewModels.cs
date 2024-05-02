@@ -68,8 +68,6 @@ namespace Schemes.ViewModels
         [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{5,}", ErrorMessage = "Your password must be at least 5 characters long and contain at least 1 letter and 1 number")]
         public string Password { get; set; }
 
-        [Required]
-        [RegularExpression(@"(^[6 - 9]\d{9}$)", ErrorMessage = "Invalid mobile number")]
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
 
