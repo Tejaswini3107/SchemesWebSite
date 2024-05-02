@@ -112,8 +112,11 @@ namespace Schemes.Repository
             int schemeID = 0;
             Models.SchemesDetails schemeDetails = new SchemesDetails();
                 schemeDetails.Area = scheme.Area;
-                schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
-                schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
+            if (scheme.ApplyAndLink != null)
+            {
+                schemeDetails.ApplyAndLink = ReplaceUrlsWithLinks(scheme.ApplyAndLink);
+            }
+            schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
                 schemeDetails.Benefits = scheme.Benefits;
                 schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
                 schemeDetails.Description = scheme.Description;
@@ -140,7 +143,10 @@ namespace Schemes.Repository
             new LoginRepository(_dbContext).SendOTPAsync(sMSDetails);
             MultilingualSchemesDataVM schemeData = new MultilingualSchemesDataVM();
             schemeData.Area = scheme.Area;
-            schemeData.ApplyAndLink = scheme.ApplyAndLink;
+            if (scheme.ApplyAndLink != null)
+            {
+                schemeData.ApplyAndLink = ReplaceUrlsWithLinks(scheme.ApplyAndLink);
+            }
             schemeData.NameOftheScheme = scheme.NameOftheScheme;
             schemeData.Benefits = scheme.Benefits;
             schemeData.EligibilityCriteria = scheme.EligibilityCriteria;
@@ -153,23 +159,38 @@ namespace Schemes.Repository
         }
         public bool AddNewSchemeByLangCode(MultilingualSchemesDataVM scheme,int schemeID,string LangCode)
         {
-            Models.MultilingualSchemesData schemeDetails = new MultilingualSchemesData();
-            schemeDetails.Area = scheme.Area;
-            schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
-            schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
-            schemeDetails.Benefits = scheme.Benefits;
-            schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
-            schemeDetails.Description = scheme.Description;
-            schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
-            schemeDetails.AvaliableFor = scheme.AvaliableFor;
-            schemeDetails.LangCode = LangCode;
-            schemeDetails.SchemesDetailID = schemeID;
-            schemeDetails.IsActive = true;
-            schemeDetails.InsertedDate = DateTime.Now;
-            schemeDetails.InsertedBy = "Admin";
-            _dbContext.MultilingualSchemesData.Add(schemeDetails);
-            _dbContext.SaveChanges();
-            return true;
+            try
+            {
+                Models.MultilingualSchemesData schemeDetails = new MultilingualSchemesData();
+                schemeDetails.Area = scheme.Area;
+                if (scheme.ApplyAndLink != null)
+                {
+                    schemeDetails.ApplyAndLink = ReplaceUrlsWithLinks(scheme.ApplyAndLink);
+                }
+                schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
+                schemeDetails.Benefits = scheme.Benefits;
+                schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
+                schemeDetails.Description = scheme.Description;
+                schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+                schemeDetails.AvaliableFor = scheme.AvaliableFor;
+                schemeDetails.LangCode = LangCode;
+                schemeDetails.SchemesDetailID = schemeID;
+                schemeDetails.IsActive = true;
+                schemeDetails.InsertedDate = DateTime.Now;
+                schemeDetails.InsertedBy = "Admin";
+                using (var context = new SchemesContext())
+                {
+                    context.MultilingualSchemesData.Add(schemeDetails);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
         public bool UpdateScheme(SchemeDetails scheme)
         {
@@ -383,6 +404,8 @@ namespace Schemes.Repository
             {
                 adminLogin.UserName = adminRegistrationVM.UserName;
                 adminLogin.Password = adminRegistrationVM.Password;
+                adminLogin.EmailId=adminRegistrationVM.EmailId;
+                adminLogin.LoginStatus = true;
                 admin.EmailId= adminRegistrationVM.EmailId;
                 admin.PhoneNo = adminRegistrationVM.PhoneNo;
                 admin.FirstName = adminRegistrationVM.FirstName;

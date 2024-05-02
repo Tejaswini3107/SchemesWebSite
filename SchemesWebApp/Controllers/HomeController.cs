@@ -83,11 +83,12 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
         }
-        public IActionResult GetLoanDetails(string bankName)
+        public IActionResult GetLoanDetails(string bankName,string langCode="en")
         {
             try
             {
                 LoanDetails details = new CustomerManager(_dbContext).GetLoanDetails(bankName);
+                details.LangCode = langCode;
                 return Ok(details);
             }
             catch (Exception ex)

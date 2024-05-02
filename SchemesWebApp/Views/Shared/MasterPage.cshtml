@@ -43,13 +43,14 @@
         var id = ViewBag.CustomerID;
         int customerId = 0;
         if (int.TryParse(id, out customerId))
-    {
-        // Conversion succeeded, customerId now holds the integer value
-    }
-    else
-    {
-        // Conversion failed, handle the error or set a default value
-    }
+        {
+            // Conversion succeeded, customerId now holds the integer value
+        }
+        else
+        {
+            // Conversion failed, handle the error or set a default value
+        }
+        var Lang = ViewBag.Selectedlang;
     }
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -81,9 +82,9 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" id="schemeName">Farmers</a>
-                        <a class="collapse-item" id="schemeName">Students</a>
-                        <a class="collapse-item" id="schemeName">Backward Caste</a>
+                        <a class="collapse-item" href="/Home/GetSchemesList?name=Farmers&langCode=@Lang">Farmers</a>
+                        <a class="collapse-item" href="/Home/GetSchemesList?name=Students&langCode=@Lang">Students</a>
+                        <a class="collapse-item" href="/Home/GetSchemesList?name=Backward Caste&langCode=@Lang">Backward Caste</a>
                     </div>
                 </div>
 
@@ -501,21 +502,7 @@
                     });
                 }
             });
-            $("#schemeName").on('click', function () {
-                $.ajax({
-                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + selectedLanguage,
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "html",
-                    success: function (data) {
-
-                    },
-                    error: function (err) {
-                        alert(err);
-                    }
-                });
-            });
-
+           
             $("#disable").hide();
 
             $(function () {

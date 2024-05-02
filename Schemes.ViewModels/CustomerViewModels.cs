@@ -90,6 +90,23 @@ namespace Schemes.ViewModels
         public string MaxloanAmount { get; set; }
         public string MinInterestRate { get; set; }
         public string MaxInterestRate { get; set; }
+        public string? LangCode { get; set; }
+
+    }
+    public class LoanDetailswithLabels
+    {
+        public string BankNameLBL { get; set; }
+        public string LoanType { get; set; }
+        public string MinLoanAmountLBL { get; set; }
+        public string MaxloanAmountLBL { get; set; }
+        public string MinInterestRateLBL { get; set; }
+        public string MaxInterestRateLBL { get; set; }
+        public string loanEMITxt { get; set; }
+        public string resultsLbl { get; set; }
+        public string TIPTxt { get; set; }
+        public string TPTxt { get; set; }
+        public string CalculateEMIBTN { get; set; }
+        public LoanDetails LoanDetails { get; set; }
 
     }
     public class SessionUser
