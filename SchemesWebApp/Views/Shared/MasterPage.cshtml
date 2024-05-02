@@ -17,7 +17,6 @@
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <link rel="stylesheet" href="~/SchemesWebApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -452,13 +451,117 @@
             </div>
         </div>
     </div>
-    <script src="~/js/masterpage.js"></script>
 
-    <script>
-        lang = "@ViewBag.Selectedlang";
-        customerID = @customerId;
-        fromView(lang, customerID);
+    <script type="text/javascript">
+        var lang = "";
+        $(document).ready(function () {
+            lang = "@ViewBag.Selectedlang";
+            var selectedLanguage = lang;
 
+            $('#language').on('change', function () {
+                selectedLanguage = document.getElementById('language').value;
+                $("#selectedlanguage").val(selectedLanguage);
+                $("#langaugeModal").modal('show');
+                $("#langaugeModal").find(".modal-body").html("Language Changed to " + document.getElementById('language').value);
+                $('#language').val(selectedLanguage);
+            });
+            $("#langaugeModal .okbtn").on("click", function () {
+                var currentURL = window.location.href.toString();
+
+                // Define the substring to check
+                var substring = "home/homepage";
+
+                // Check if the current URL contains the substring
+                if (currentURL.toLowerCase().indexOf(substring) !== -1) {
+                    $.ajax({
+                        url: "/Home/HomePage?customerID=" + @customerId + "&selectedlang=" + selectedLanguage,
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "html",
+                        success: function (data) {
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + selectedLanguage,
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "html",
+
+                        success: function (data) {
+
+                        },
+                        error: function (err) {
+                            alert(err);
+                        }
+                    });
+                }
+            });
+            $("#schemeName").on('click', function () {
+                $.ajax({
+                    url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + selectedLanguage,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (data) {
+
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            });
+
+            $("#disable").hide();
+
+            $(function () {
+                $("#addClass").click(function () {
+                    $('#sidebar_secondary').addClass('popup-box-on');
+                });
+                $(".open-btn").click(function () {
+                    $('#sidebar_secondary').removeClass('d-none');
+                    $('.chatButtonDiv').addClass('d-none');
+
+                });
+                $("#removeClass").click(function () {
+                    $('#sidebar_secondary').removeClass('popup-box-on');
+                });
+
+
+                $('#sidebar_secondary').on('click', 'span.uk-input-group-addon a', function () {
+                    var message = $('#submit_message').val(); // Get entered text
+
+                    $('.chat_box').append('<div class="chat_message_wrapper chat_message_right">' +
+                        '<ul class="chat_message "><li><p>' + message + '</p></li></ul></div>');
+                    $('#submit_message').val('');
+                    $.ajax({
+                        type: 'GET',
+                        url: "Home/Chatbot?message=" + message,
+                        contentType: 'application/json',
+                        success: function (response) {
+                            $('.chat_box').append('<div class="chat_message_wrapper"><div class="chat_user_avatar"><img src = "https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image"></div>' +
+                                '<ul class="chat_message"><li><p>' + response + '</p></li></ul></div>');
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                });
+                $(".closeBtn").on('click', function () {
+                    $('#sidebar_secondary').addClass('d-none');
+                    $('.chatButtonDiv').removeClass('d-none');
+
+                });
+
+            });
+            $('#sidebarToggle').click(function () {
+                $('#accordionSidebar').toggleClass('sidebar-hidden');
+            });
+        });
     </script>
 </body>
 </html>
