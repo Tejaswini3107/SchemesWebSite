@@ -4,10 +4,8 @@
     ViewData["Title"] = "CreateNewAdmin";
 }
 
-<h1>CreateNewAdmin</h1>
+<h1>Create New Admin</h1>
 
-<h4>AdminRegistrationVM</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateNewAdmin">
@@ -42,7 +40,7 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group p-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
