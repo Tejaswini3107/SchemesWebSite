@@ -46,40 +46,41 @@ namespace Schemes.Repository
             var schemeDetailsFromDB = _dbContext.SchemesDetails.Where(s => s.AvaliableFor.Contains(name)&&s.IsActive == true).ToList();
             if (schemeDetailsFromDB != null)
             {
-                var details = _dbContext.MultilingualSchemesData.Where(s => s.AvaliableFor.Contains(name) && s.LangCode == langCode && s.IsActive == true).ToList();
-                if (details != null)
+                foreach (var item in schemeDetailsFromDB)
                 {
-                    foreach (var scheme in details)
+                    var details = _dbContext.MultilingualSchemesData.Where(s => s.SchemesDetailID == item.SchemesDetailID && s.LangCode == langCode && s.IsActive == true).ToList();
+                    if (details != null &&details.Count>0)
                     {
-                        SchemeDetails schemeDetails = new SchemeDetails();
-                        schemeDetails.SchemesDetailID = scheme.SchemesDetailID;
-                        schemeDetails.Area = scheme.Area;
-                        schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
-                        schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
-                        schemeDetails.Benefits = scheme.Benefits;
-                        schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
-                        schemeDetails.Description = scheme.Description;
-                        schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+                        foreach (var scheme in details)
+                        {
+                            SchemeDetails schemeDetails = new SchemeDetails();
+                            schemeDetails.SchemesDetailID = scheme.SchemesDetailID;
+                            schemeDetails.Area = scheme.Area;
+                            schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
+                            schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
+                            schemeDetails.Benefits = scheme.Benefits;
+                            schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
+                            schemeDetails.Description = scheme.Description;
+                            schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
 
-                        schemeDetailsList.Add(schemeDetails);
+                            schemeDetailsList.Add(schemeDetails);
+                        }
                     }
-                }
-                else
-                {
-                    foreach (var scheme in schemeDetailsFromDB)
+                    else
                     {
-                        SchemeDetails schemeDetails = new SchemeDetails();
-                        schemeDetails.SchemesDetailID = scheme.SchemesDetailID;
-                        schemeDetails.Area = scheme.Area;
-                        schemeDetails.ApplyAndLink = scheme.ApplyAndLink;
-                        schemeDetails.NameOftheScheme = scheme.NameOftheScheme;
-                        schemeDetails.Benefits = scheme.Benefits;
-                        schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
-                        schemeDetails.Description = scheme.Description;
-                        schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+                        
+                            SchemeDetails schemeDetails = new SchemeDetails();
+                            schemeDetails.SchemesDetailID = item.SchemesDetailID;
+                            schemeDetails.Area = item.Area;
+                            schemeDetails.ApplyAndLink = item.ApplyAndLink;
+                            schemeDetails.NameOftheScheme = item.NameOftheScheme;
+                            schemeDetails.Benefits = item.Benefits;
+                            schemeDetails.EligibilityCriteria = item.EligibilityCriteria;
+                            schemeDetails.Description = item.Description;
+                            schemeDetails.DocumentsRequired = item.DocumentsRequired;
 
-                        schemeDetailsList.Add(schemeDetails);
-                    }
+                            schemeDetailsList.Add(schemeDetails);
+                    } 
                 }
             }
             return schemeDetailsList;
@@ -285,10 +286,10 @@ namespace Schemes.Repository
             
             return schemeDetails;
         }
-        public LoanDetails GetLoanDetails(string bankName)
+        public LoanDetails GetLoanDetails(string bankName,string loanType)
         {
             LoanDetails loanDetails = new LoanDetails();
-            var loanInterestDetails = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName)).FirstOrDefault();
+            var loanInterestDetails = _dbContext.LoanInterestDetails.Where(s => s.BankName.Contains(bankName)&&s.LoanType.Equals(loanType)).FirstOrDefault();
             if (loanInterestDetails != null)
             {
                 loanDetails.LoanType = loanInterestDetails.LoanType;

@@ -82,9 +82,9 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" href="/Home/GetSchemesList?name=Farmers&langCode=@Lang">Farmers</a>
-                        <a class="collapse-item" href="/Home/GetSchemesList?name=Students&langCode=@Lang">Students</a>
-                        <a class="collapse-item" href="/Home/GetSchemesList?name=Backward Caste&langCode=@Lang">Backward Caste</a>
+                        <a class="collapse-item" id="schemeBtn">Farmers</a>
+                        <a class="collapse-item" id="schemeBtn">Students</a>
+                        <a class="collapse-item" id="schemeBtn">Backward Caste</a>
                     </div>
                 </div>
 
@@ -458,15 +458,17 @@
         $(document).ready(function () {
             lang = "@ViewBag.Selectedlang";
             var selectedLanguage = lang;
-
+            localStorage.setItem('selectedlan', selectedLanguage);
             $('#language').on('change', function () {
                 selectedLanguage = document.getElementById('language').value;
                 $("#selectedlanguage").val(selectedLanguage);
-                $("#langaugeModal").modal('show');
-                $("#langaugeModal").find(".modal-body").html("Language Changed to " + document.getElementById('language').value);
+                // $("#langaugeModal").modal('show');
+                // $("#langaugeModal").find(".modal-body").html("Language Changed to " + document.getElementById('language').value);
                 $('#language').val(selectedLanguage);
-            });
-            $("#langaugeModal .okbtn").on("click", function () {
+                if (selectedLanguage != localStorage.getItem('selectedlan'))
+                {
+                    localStorage.setItem('selectedlan', selectedLanguage);
+                }
                 var currentURL = window.location.href.toString();
 
                 // Define the substring to check
@@ -475,7 +477,7 @@
                 // Check if the current URL contains the substring
                 if (currentURL.toLowerCase().indexOf(substring) !== -1) {
                     $.ajax({
-                        url: "/Home/HomePage?customerID=" + @customerId + "&selectedlang=" + selectedLanguage,
+                        url: "/Home/HomePage?customerID=" + @customerId + "&selectedlang=" + localStorage.getItem("selectedlan"),
                         type: "GET",
                         contentType: "application/json; charset=utf-8",
                         dataType: "html",
@@ -488,7 +490,7 @@
                 }
                 else {
                     $.ajax({
-                        url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + selectedLanguage,
+                        url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + localStorage.getItem("selectedlan"),
                         type: "GET",
                         contentType: "application/json; charset=utf-8",
                         dataType: "html",
@@ -501,6 +503,21 @@
                         }
                     });
                 }
+            });
+
+            $("#schemeBtn").on("click", function () {
+                $.ajax({
+                    url: "/Home/GetSchemesList?name=" + $(this).text() + "&langCode=" + localStorage.getItem("selectedlan"),
+                    type: "GET",
+                    dataType: "html",
+
+                    success: function (data) {
+
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
             });
            
             $("#disable").hide();

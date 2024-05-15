@@ -83,12 +83,11 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
         }
-        public IActionResult GetLoanDetails(string bankName,string langCode="en")
+        public IActionResult GetLoanDetails(string bankName,string loanType = "")
         {
             try
             {
-                LoanDetails details = new CustomerManager(_dbContext).GetLoanDetails(bankName);
-                details.LangCode = langCode;
+                LoanDetails details = new CustomerManager(_dbContext).GetLoanDetails(bankName, loanType);
                 return Ok(details);
             }
             catch (Exception ex)
@@ -101,6 +100,8 @@ namespace SchemesWebApp.Controllers
             try
             {
                 List<string> list = new CustomerManager(_dbContext).GetLoantypes(bankName);
+                ViewBag.BankName = bankName;
+
                 return View(list);
             }
             catch (Exception ex)
