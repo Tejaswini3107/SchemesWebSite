@@ -27,5 +27,6 @@ namespace Schemes.ViewModels
         public string TIPTxt { get; set; }
         public string TPTxt { get; set; }
         public List<string>? strings { get; set; }
+        public List<Schemes.ViewModels.SchemeDetails>? SchemeDetailList { get; set; }
     }
 }

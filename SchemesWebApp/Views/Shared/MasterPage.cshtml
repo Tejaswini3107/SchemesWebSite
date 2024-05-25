@@ -85,9 +85,9 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" id="schemeBtn">@Model.SideBarLabel3</a>
-                        <a class="collapse-item" id="schemeBtn">@Model.SideBarLabel4</a>
-                        <a class="collapse-item" id="schemeBtn">@Model.SideBarLabel5</a>
+                        <a class="collapse-item" href="~/Home/GetSchemesList?name=Farmers&&langCode=@Lang" id="schemeBtn">@Model.SideBarLabel3</a>
+                        <a class="collapse-item" href="~/Home/GetSchemesList?name=Students&&langCode=@Lang" id="schemeBtn">@Model.SideBarLabel4</a>
+                        <a class="collapse-item" href="~/Home/GetSchemesList?name=Backward Caste&&langCode=@Lang" id="schemeBtn">@Model.SideBarLabel5</a>
                     </div>
                 </div>
 
@@ -517,20 +517,21 @@
                 }
             });
 
-            $("#schemeBtn").on("click", function () {
-                $.ajax({
-                    url: "/Home/GetSchemesList?name=" + $(this).text() + "&langCode=" + localStorage.getItem("selectedlan"),
-                    type: "GET",
-                    dataType: "html",
+            // $("#schemeBtn").on("click", function () {
+            //     $.ajax({
+            //         url: "/Home/GetSchemesList?name=" + $(this).text() + "&langCode=" + localStorage.getItem("selectedlan"),
+            //         type: "GET",
+            //         dataType: "html",
 
-                    success: function (data) {
+            //         success: function (data) {
+            //             window.location.href = "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + localStorage.getItem("selectedlan");
 
-                    },
-                    error: function (err) {
-                        alert(err);
-                    }
-                });
-            });
+            //         },
+            //         error: function (err) {
+            //             alert(err);
+            //         }
+            //     });
+            // });
            
             $("#disable").hide();
 

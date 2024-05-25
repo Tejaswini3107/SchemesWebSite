@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Schemes.ViewModels.SchemeDetails>
+﻿@using Schemes.ViewModels
+@model SchemesCustomerLabelsVM
 
 @{
     ViewData["Title"] = "GetSchemesList";
@@ -53,7 +54,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.SchemeDetailList) {
             <tr>
                 <td class="d-none">
                     @item.SchemesDetailID
