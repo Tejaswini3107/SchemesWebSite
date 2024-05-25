@@ -21,11 +21,14 @@ namespace Schemes.Repository
             try
             {
                 int CustomerID = 0;
-                var CustomerLogin = _dbContext.CustomerLogin.Where(e => e.EmailId == email &&e.Password==password).FirstOrDefault();
+                var CustomerLogin = _dbContext.CustomerLogin.Where(e => e.EmailId == email &&e.Password==password &&e.LoginStatus==true).FirstOrDefault();
                 if (CustomerLogin != null)
                 {
-                    
-                            return CustomerLogin.CustomerId;
+                    var IsActiveCustomer=_dbContext.Customers.Any(s=>s.CustomerId == CustomerID &&s.CustomerStatus==(int)CustomerStatus.Active);
+                    if (IsActiveCustomer)
+                    {
+                        return CustomerLogin.CustomerId;
+                    }
                 }
                 return 0;
             }
