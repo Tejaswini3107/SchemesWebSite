@@ -136,7 +136,7 @@
                         <li >
                             
                             <!-- Dropdown - Messages -->
-                            <div class="dropdown-container">
+                            <div class="dropdown-container  languagesDropDown">
                                 <label for="language">Select a language:</label>
                                 <select id="language">
                                     <option value="en">English</option>
@@ -527,7 +527,7 @@
                         },
                         success: function (data) {
                             // Navigate to the GetSchemesList view
-                            window.location.href = "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + localStorage.getItem("selectedlan");
+                            window.location.href = "/Home/GetSchemesList?name=" + @ViewBag.SchemeAvailableFor + "&langCode=" + localStorage.getItem("selectedlan");
                         },
                         error: function (err) {
                             alert(err);
@@ -536,21 +536,6 @@
                 }
             });
 
-            // $("#schemeBtn").on("click", function () {
-            //     $.ajax({
-            //         url: "/Home/GetSchemesList?name=" + $(this).text() + "&langCode=" + localStorage.getItem("selectedlan"),
-            //         type: "GET",
-            //         dataType: "html",
-
-            //         success: function (data) {
-            //             window.location.href = "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + localStorage.getItem("selectedlan");
-
-            //         },
-            //         error: function (err) {
-            //             alert(err);
-            //         }
-            //     });
-            // });
            
             $("#disable").hide();
 

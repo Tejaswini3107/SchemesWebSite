@@ -51,6 +51,7 @@ namespace Schemes.ViewModels
         public string? ApplyAndLink { get; set; }
         public string? AvailableFor { get; set; }
         public bool? IsActive { get; set; }
+        public string? Lang { get; set; }
 
     }
     public class RegistrationViewModel

@@ -62,6 +62,8 @@ namespace Schemes.Repository
                             schemeDetails.EligibilityCriteria = scheme.EligibilityCriteria;
                             schemeDetails.Description = scheme.Description;
                             schemeDetails.DocumentsRequired = scheme.DocumentsRequired;
+                            schemeDetails.AvailableFor = scheme.AvaliableFor;
+                            schemeDetails.Lang = scheme.LangCode;
 
                             schemeDetailsList.Add(schemeDetails);
                         }
@@ -78,8 +80,11 @@ namespace Schemes.Repository
                             schemeDetails.EligibilityCriteria = item.EligibilityCriteria;
                             schemeDetails.Description = item.Description;
                             schemeDetails.DocumentsRequired = item.DocumentsRequired;
+                        schemeDetails.AvailableFor = item.AvaliableFor;
+                        schemeDetails.Lang = "en";
 
-                            schemeDetailsList.Add(schemeDetails);
+
+                        schemeDetailsList.Add(schemeDetails);
                     } 
                 }
             }
