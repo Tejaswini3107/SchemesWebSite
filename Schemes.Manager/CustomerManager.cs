@@ -104,7 +104,7 @@ namespace Schemes.Manager
         public async Task TranslationAPI(List<string> textsTotranslate,int schemeID)
         {
             string endpoint = "https://api.cognitive.microsofttranslator.com";
-            string subscriptionKey = "3276690b2ef842c29b6eee6cef002467";
+            string subscriptionKey = "2fd420f094df4f61a338138d6746d2cc";
             string region = "eastus";
             string[] targetLanguages = { "hi","kn", "ml", "ta", "te","ur" };
             var requestBody = new List<object>();

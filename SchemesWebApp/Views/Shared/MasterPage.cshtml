@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model Schemes.ViewModels.SchemesCustomerLabelsVM
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -51,6 +53,7 @@
             // Conversion failed, handle the error or set a default value
         }
         var Lang = ViewBag.Selectedlang;
+        var url = "";
     }
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -68,7 +71,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
             <li class="nav-item" id="EmpShow">
-                <a class="nav-link" href="~/Home/HomePage" style="color:white"><span>Home</span></a>
+                <a class="nav-link" href="~/Home/HomePage?customerID=@customerId&&LangCode=@Lang" style="color:white"><span>@Model.SideBarLabel1</span></a>
             </li>
             <!-- Nav Item - Tables -->
 
@@ -76,15 +79,15 @@
                 <a class="nav-link collapsed" id="Schemes" href="#" data-toggle="collapse" data-target="#collapseUtilities2"
                    aria-expanded="true" aria-controls="collapseUtilities">
                     
-                    <span> Government Schemes</span>
+                    <span>@Model.SideBarLabel2</span>
                 </a>
                 <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header"></h6>
-                        <a class="collapse-item" id="schemeBtn">Farmers</a>
-                        <a class="collapse-item" id="schemeBtn">Students</a>
-                        <a class="collapse-item" id="schemeBtn">Backward Caste</a>
+                        <a class="collapse-item" id="schemeBtn">@Model.SideBarLabel3</a>
+                        <a class="collapse-item" id="schemeBtn">@Model.SideBarLabel4</a>
+                        <a class="collapse-item" id="schemeBtn">@Model.SideBarLabel5</a>
                     </div>
                 </div>
 
@@ -477,26 +480,35 @@
                 // Check if the current URL contains the substring
                 if (currentURL.toLowerCase().indexOf(substring) !== -1) {
                     $.ajax({
-                        url: "/Home/HomePage?customerID=" + @customerId + "&selectedlang=" + localStorage.getItem("selectedlan"),
+                        url: "/Home/HomePage",
                         type: "GET",
                         contentType: "application/json; charset=utf-8",
                         dataType: "html",
+                        data: {
+                            customerID: @customerId,
+                            LangCode: localStorage.getItem("selectedlan")
+                        },
                         success: function (data) {
+                            // Navigate to the HomePage view
+                            window.location.href = "/Home/HomePage?customerID=" + @customerId + "&LangCode=" + localStorage.getItem("selectedlan");
                         },
                         error: function (err) {
                             alert(err);
                         }
                     });
-                }
-                else {
+                } else {
                     $.ajax({
-                        url: "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + localStorage.getItem("selectedlan"),
+                        url: "/Home/GetSchemesList",
                         type: "GET",
                         contentType: "application/json; charset=utf-8",
                         dataType: "html",
-
+                        data: {
+                            name: $("#schemeName").html(),
+                            langCode: localStorage.getItem("selectedlan")
+                        },
                         success: function (data) {
-
+                            // Navigate to the GetSchemesList view
+                            window.location.href = "/Home/GetSchemesList?name=" + $("#schemeName").html() + "&langCode=" + localStorage.getItem("selectedlan");
                         },
                         error: function (err) {
                             alert(err);

@@ -1,5 +1,4 @@
-﻿@model List<Schemes.ViewModels.SchemeDetails>
-
+﻿@model Schemes.ViewModels.SchemesCustomerLabelsVM
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/MasterPage.cshtml";
@@ -12,42 +11,42 @@
 <!-- Content Row -->
     <div class="row justify-content-center">
         <div class="mb-4" style="text-align: center; right:50%">
-            <div class="btn btn-primary banks">Banks</div>
+            <div class="btn btn-primary banks">@Model.BanksTitle</div>
             <div class="row pt-3">
-            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" href="~/Home/GetLoantypes?bankName=SBI" data-bs-toggle="button">SBI</a>
-            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" href="~/Home/GetLoantypes?bankName=UNION" data-bs-toggle="button">UNION</a>
-            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" href="~/Home/GetLoantypes?bankName=KARNATAKA" data-bs-toggle="button">KARNATAKA</a>
+            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" href="~/Home/GetLoantypes?bankName=SBI&&LangCode=@ViewBag.Selectedlang" data-bs-toggle="button">@Model.Bank1</a>
+            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" href="~/Home/GetLoantypes?bankName=UNION&&LangCode=@ViewBag.Selectedlang" data-bs-toggle="button">@Model.Bank2</a>
+            <a id="bankEMI" class="btn btn-primary col m-2 emibtn" role="button" href="~/Home/GetLoantypes?bankName=KARNATAKA&&LangCode=@ViewBag.Selectedlang" data-bs-toggle="button">@Model.Bank3</a>
             </div>
         </div>
     </div>
 <div class="card border-primary col-sm-8 mx-auto emiCalculatorDiv" style="padding-right:0px;padding-left:0px;">
     <div class="card-header bg-primary">
-        <h3 class="text-center emiHeader" style="color:white">EMI CALCULATOR</h3>
+        <h3 class="text-center emiHeader" style="color:white">@Model.EmiTitle</h3>
     </div>
     <div class="card-body align-items-center">
         <div class="row">
             <div class="col-md-12">
-                <label id="loanAmountLbl" style="color:Black; padding-top:1%" for="loanAmount">Loan Amount (₹)</label>
+                <label id="loanAmountLbl" style="color:Black; padding-top:1%" for="loanAmount">@Model.LoanAmountLBL</label>
                 <input type="range" id="loanAmount" min="100000" max="10000000" step="5000" value="100000">
                 <input type="text" id="loanAmountInput" >
                 <br>
 
-                <label id="interestRateLbl" style="color:Black; padding-top:1%" for="interestRate">Interest Rate (%)</label>
+                <label id="interestRateLbl" style="color:Black; padding-top:1%" for="interestRate">@Model.InterestRateLBL</label>
                 <input  type="range" id="interestRate" min="1" max="20" step="0.1" value="1">
                 <input type="text" id="interestRateInput" >
                 <br>
 
-                <label id="loanTenureLbl" style="color:Black; padding-top:1%" for="loanTenure">Loan Tenure (years)</label>
+                <label id="loanTenureLbl" style="color:Black; padding-top:1%" for="loanTenure">@Model.loanTenureLBL</label>
                 <input type="range" id="loanTenure" min="1" max="20" step="1" value="1">
                 <input type="text" id="loanTenureInput" >
                 <br>
                 <br>
-                <button onclick="calculateEMI()" class="btn btn-primary calculateEMIBtn">Calculate EMI</button>
+                <button onclick="calculateEMI()" class="btn btn-primary calculateEMIBtn">@Model.calculateEMIBtnTxt</button>
 
-            <h3 style="color:Black; padding-top:1%" class="resultsLbl">Results</h3>
-                <p style="color:Black; padding-top:1%" id="loanEMITxt">Loan EMI: ₹<span style="font-style:oblique;font-weight:600; padding-top:1%" id="emi"></span></p>
-                <p style="color:Black; padding-top:1%" id="TIPTxt">Total Interest Payable: ₹ <span style="font-style:oblique;font-weight:600; padding-top:1%" id="totalInterest"></span></p>
-                <p style="color:Black; padding-top:1%" id="TPTxt">Total Payment (Principal + Interest): ₹<span style="font-style:oblique;font-weight:600; padding-top:1%" id="totalPayment"></span></p>
+            <h3 style="color:Black; padding-top:1%" class="resultsLbl">@Model.ResultTxt</h3>
+                <p style="color:Black; padding-top:1%" id="loanEMITxt">@Model.loanEMITxt<span style="font-style:oblique;font-weight:600; padding-top:1%" id="emi"></span></p>
+                <p style="color:Black; padding-top:1%" id="TIPTxt">@Model.TIPTxt<span style="font-style:oblique;font-weight:600; padding-top:1%" id="totalInterest"></span></p>
+                <p style="color:Black; padding-top:1%" id="TPTxt">@Model.TPTxt<span style="font-style:oblique;font-weight:600; padding-top:1%" id="totalPayment"></span></p>
             </div>
             </div>
   </div>
@@ -82,91 +81,6 @@
         document.getElementById("loanAmountInput").value = document.getElementById("loanAmount").value;
         document.getElementById("interestRateInput").value = document.getElementById("interestRate").value;
         document.getElementById("loanTenureInput").value = document.getElementById("loanTenure").value;
-        if (localStorage.getItem("selectedlan") == "hi") {
-            $('.banks').text('बैंकों');
-            $('.emiHeader').text('ईएमआई कैलकुलेटर');
-            $('.resultsLbl').text('परिणाम');
-            $('#loanEMITxt').text('ऋण ईएमआई: ₹');
-            $('#TIPTxt').text('कुल देय ब्याज: ₹');
-            $('#TPTxt').text('कुल भुगतान (मूलधन+ब्याज): ₹');
-            $('#loanTenureLbl').text('ऋण अवधि (वर्ष)');
-            $('#interestRateLbl').text('ब्याज दर (%)');
-            $('#loanAmountLbl').text('ऋण राशि(₹)');
-            $('#KARNATAKALoanEMI').text('कर्नाटक');
-            $('#SBILoanEMI').text('स्टे.बैं.इं');
-            $('#UNIONLoanEMI').text('यूनियन');
-
-        }
-        else if (localStorage.getItem("selectedlan") == "kn") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if (localStorage.getItem("selectedlan") == "ml") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if (localStorage.getItem("selectedlan") == "ta") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if (localStorage.getItem("selectedlan") == "te") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
-        else if (localStorage.getItem("selectedlan") == "ur") {
-            $('.banks').text('');
-            $('.emiHeader').text('');
-            $('.resultsLbl').text('');
-            $('#loanEMITxt').text('');
-            $('#TIPTxt').text('');
-            $('#TPTxt').text('');
-            $('#loanTenureLbl').text('');
-            $('#interestRateLbl').text('');
-            $('#loanAmountLbl').text('');
-            $('#KARNATAKALoanEMI').text('');
-            $('#SBILoanEMI').text('');
-            $('#UNIONLoanEMI').text('');
-        }
         // $(".emiCalculatorDiv #loanAmount").attr("min", data.minLoanAmount);
         // $(".emiCalculatorDiv #loanAmount").attr("max", data.maxloanAmount);
         // $(".emiCalculatorDiv #interestRate").attr("max", data.maxInterestRate);
