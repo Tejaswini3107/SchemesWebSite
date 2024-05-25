@@ -480,6 +480,7 @@
             lang = "@ViewBag.Selectedlang";
             var selectedLanguage = lang;
             localStorage.setItem('selectedlan', selectedLanguage);
+            $('#language').val(selectedLanguage);
             $('#language').on('change', function () {
                 selectedLanguage = document.getElementById('language').value;
                 $("#selectedlanguage").val(selectedLanguage);
