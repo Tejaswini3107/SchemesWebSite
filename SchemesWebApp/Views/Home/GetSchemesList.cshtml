@@ -6,7 +6,9 @@
     Layout = "~/Views/Shared/MasterPage.cshtml";
     string availableFor = ViewBag.AvailableFor;
     string langCode = ViewBag.Selectedlang;
-    string? availableForTxtBYLangCode = Model.SchemeDetailList.Where(s => s.Lang == langCode).FirstOrDefault().AvailableFor;
+
+    string? availableForTxtBYLangCode = availableFor;
+    availableForTxtBYLangCode = Model.SchemeDetailList?.Where(s => s.Lang == langCode).FirstOrDefault()?.AvailableFor;
     string schemesAvailableForFarmers = "";
     if (langCode == "en") {
             schemesAvailableForFarmers = "Schemes Available For" + @availableForTxtBYLangCode;
