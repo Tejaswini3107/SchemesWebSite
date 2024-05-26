@@ -21,7 +21,7 @@ namespace Schemes.Repository
             try
             {
                 int CustomerID = 0;
-                var CustomerLogin = _dbContext.CustomerLogin.Where(e => e.EmailId == email &&e.Password==password &&e.LoginStatus==true).FirstOrDefault();
+                var CustomerLogin = _dbContext.CustomerLogin.Where(e => e.EmailId == email &&e.Password==password &&e.LoginStatus==true).OrderByDescending(s=>s.InsertedDate).FirstOrDefault();
                 if (CustomerLogin != null)
                 {
                     var IsActiveCustomer=_dbContext.Customers.Any(s=>s.CustomerId == CustomerID &&s.CustomerStatus==(int)CustomerStatus.Active);
@@ -42,10 +42,9 @@ namespace Schemes.Repository
         {
             try
             {
-                var adminLogin = _dbContext.AdminLogin.Where(e => e.UserName == userName && e.Password == password).FirstOrDefault();
+                var adminLogin = _dbContext.AdminLogin.Where(e => e.UserName == userName && e.Password == password).OrderByDescending(s => s.InsertedDate).FirstOrDefault();
                 if (adminLogin != null)
                 {
-
                     return adminLogin.AdminId;
                 }
                 return 0;
