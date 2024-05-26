@@ -24,7 +24,7 @@ namespace Schemes.Repository
                 var CustomerLogin = _dbContext.CustomerLogin.Where(e => e.EmailId == email &&e.Password==password &&e.LoginStatus==true).OrderByDescending(s=>s.InsertedDate).FirstOrDefault();
                 if (CustomerLogin != null)
                 {
-                    var IsActiveCustomer=_dbContext.Customers.Any(s=>s.CustomerId == CustomerID &&s.CustomerStatus==(int)CustomerStatus.Active);
+                    var IsActiveCustomer=_dbContext.Customers.Any(s=>s.CustomerId == CustomerLogin.CustomerId &&s.CustomerStatus==(int)CustomerStatus.Active);
                     if (IsActiveCustomer)
                     {
                         return CustomerLogin.CustomerId;
