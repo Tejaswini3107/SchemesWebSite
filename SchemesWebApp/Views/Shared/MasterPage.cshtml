@@ -561,7 +561,7 @@
                     $('#submit_message').val('');
                     $.ajax({
                         type: 'GET',
-                        url: "Home/Chatbot?message=" + message,
+                        url: "Chatbot?message=" + message,
                         contentType: 'application/json',
                         success: function (response) {
                             $('.chat_box').append('<div class="chat_message_wrapper"><div class="chat_user_avatar"><img src = "https://bootdey.com/img/Content/avatar/avatar1.png" class="md-user-image"></div>' +
@@ -574,8 +574,6 @@
                 });
                 $(".closeBtn").on('click', function () {
                     $('#sidebar_secondary').addClass('d-none');
-                    $('.chatButtonDiv').removeClass('d-none');
-
                 });
 
             });
