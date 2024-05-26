@@ -290,7 +290,7 @@ namespace SchemesWebApp.Controllers
                 throw ex;
             }
         }
-        [HttpPost]
+        [HttpGet]
         public IActionResult InactivateCustomer(int customerID)
         {
             try
@@ -319,7 +319,7 @@ namespace SchemesWebApp.Controllers
                 try
                 {
 
-                    HttpResponseMessage response = httpClient.PostAsync("https://vrwknc12-5000.inc1.devtunnels.ms/bot", content).Result;
+                    HttpResponseMessage response = httpClient.PostAsync("https://l7vc7pzt-5000.inc1.devtunnels.ms/bot", content).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         string responseContent = response.Content.ReadAsStringAsync().Result;
