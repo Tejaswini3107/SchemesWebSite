@@ -22,7 +22,7 @@ namespace Schemes.Repository
         public List<SchemeDetails> GetSchemesList(string name)
         {
             List<SchemeDetails> schemeDetailsList =new List<SchemeDetails>();
-             var details   = _dbContext.SchemesDetails.Where(s=>s.AvaliableFor.Contains(name) &&s.IsActive==true).ToList();
+             var details   = _dbContext.SchemesDetails.Where(s=>s.AvaliableFor.Contains(name) &&s.IsActive==true).OrderByDescending(s => s.InsertedDate).ToList();
             foreach (var scheme in details)
             {
                 SchemeDetails schemeDetails=new SchemeDetails();
@@ -43,12 +43,12 @@ namespace Schemes.Repository
         public List<SchemeDetails>? GetSchemesListByLangCode(string name, string langCode)
         {
             List<SchemeDetails>? schemeDetailsList = new List<SchemeDetails>();
-            var schemeDetailsFromDB = _dbContext.SchemesDetails.Where(s => s.AvaliableFor.Contains(name)&&s.IsActive == true).ToList();
+            var schemeDetailsFromDB = _dbContext.SchemesDetails.Where(s => s.AvaliableFor.Contains(name)&&s.IsActive == true).OrderByDescending(s => s.InsertedDate).ToList();
             if (schemeDetailsFromDB != null)
             {
                 foreach (var item in schemeDetailsFromDB)
                 {
-                    var details = _dbContext.MultilingualSchemesData.Where(s => s.SchemesDetailID == item.SchemesDetailID && s.LangCode == langCode && s.IsActive == true).ToList();
+                    var details = _dbContext.MultilingualSchemesData.Where(s => s.SchemesDetailID == item.SchemesDetailID && s.LangCode == langCode && s.IsActive == true).OrderByDescending(s => s.InsertedDate).ToList();
                     if (details != null &&details.Count>0)
                     {
                         foreach (var scheme in details)
@@ -93,7 +93,7 @@ namespace Schemes.Repository
         public List<SchemeDetails> GetAllSchemesList()
         {
             List<SchemeDetails> schemeDetailsList = new List<SchemeDetails>();
-            var details = _dbContext.SchemesDetails.Where(s=>s.IsActive==true).ToList();
+            var details = _dbContext.SchemesDetails.Where(s=>s.IsActive==true).OrderByDescending(s=>s.InsertedDate).ToList();
             foreach (var scheme in details)
             {
                 SchemeDetails schemeDetails = new SchemeDetails();
@@ -244,12 +244,19 @@ namespace Schemes.Repository
         public bool UpdateCustomerStatus(int customerID)
         {
 
-            var details = _dbContext.Customers.Where(s => s.CustomerId == customerID).FirstOrDefault();
+            var details = _dbContext.Customers.Where(s => s.CustomerId == customerID).OrderByDescending(s=>s.InsertedDate).FirstOrDefault();
             if (details != null)
             {
                 
-                    details.CustomerStatus = (int)CustomerStatus.InActive;
+                   details.CustomerStatus = (int)CustomerStatus.InActive;
                 _dbContext.SaveChanges();
+
+                var loginDetails= _dbContext.CustomerLogin.Where(s => s.CustomerId == customerID).OrderByDescending(s=>s.InsertedDate).FirstOrDefault();
+                if (loginDetails != null) {
+                    loginDetails.LoginStatus = false;
+                    _dbContext.SaveChanges();
+                }
+
 
                 return true;
             }
