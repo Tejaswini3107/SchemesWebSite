@@ -119,6 +119,7 @@ namespace Schemes.Repository
             Customer.PhoneNo = registrationViewModel.PhoneNumber;
             Customer.DateOfBirth = registrationViewModel.DateOfBirth;
             Customer.LastName = registrationViewModel.LastName;
+            Customer.CustomerStatus = (int)CustomerStatus.Active;
             Customer.InsertedDate = DateTime.Now;
             Customer.InsertedBy = registrationViewModel.FirstName;
             _dbContext.Customers.Add(Customer);
