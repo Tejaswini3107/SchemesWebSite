@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - ENVIRONMENT=qa
+      - DEBUG=false
+      - DATABASE_URL=postgresql://schemes_user:schemes_password@db:5432/schemes_qa_db
+      - SECRET_KEY=${QA_SECRET_KEY}
+      - REDIS_URL=redis://redis:6379
+      - SMTP_SERVER=${QA_SMTP_SERVER}
+      - SMTP_USERNAME=${QA_SMTP_USERNAME}
+      - SMTP_PASSWORD=${QA_SMTP_PASSWORD}
+
+  db:
+    environment:
+      POSTGRES_DB: schemes_qa_db
+
+  frontend:
+    environment:
+      - REACT_APP_API_URL=https://qa-api.schemes.com
+      - REACT_APP_ENVIRONMENT=qa

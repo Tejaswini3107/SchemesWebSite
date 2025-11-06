@@ -1,0 +1,254 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY = 'your-registry.com'
+        DOCKER_REPO = 'schemes'
+        BACKEND_IMAGE = "${DOCKER_REGISTRY}/${DOCKER_REPO}/backend"
+        FRONTEND_IMAGE = "${DOCKER_REGISTRY}/${DOCKER_REPO}/frontend"
+    }
+
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'qa', 'uat', 'prod'], description: 'Deployment Environment')
+        string(name: 'BRANCH_NAME', defaultValue: 'release/dev', description: 'Git Branch to build')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout the specified branch
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "${params.BRANCH_NAME}"]],
+                        userRemoteConfigs: [[
+                            url: 'https://gitlab.com/your-org/schemes-website.git',
+                            credentialsId: 'gitlab-credentials'
+                        ]]
+                    ])
+                }
+            }
+        }
+
+        stage('Environment Setup') {
+            steps {
+                script {
+                    env.DOCKER_COMPOSE_FILE = "docker/docker-compose.${params.ENVIRONMENT}.yml"
+                    env.ENV_FILE = ".env.${params.ENVIRONMENT}"
+
+                    // Load environment variables
+                    if (fileExists(env.ENV_FILE)) {
+                        load env.ENV_FILE
+                    }
+                }
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                dir('schemes-python-backend') {
+                    script {
+                        def backendTag = "${BACKEND_IMAGE}:${params.ENVIRONMENT}-${BUILD_NUMBER}"
+                        sh """
+                            docker build -t ${backendTag} .
+                            docker tag ${backendTag} ${BACKEND_IMAGE}:latest-${params.ENVIRONMENT}
+                        """
+                        env.BACKEND_TAG = backendTag
+                    }
+                }
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                dir('schemes-react-frontend') {
+                    script {
+                        def frontendTag = "${FRONTEND_IMAGE}:${params.ENVIRONMENT}-${BUILD_NUMBER}"
+                        sh """
+                            docker build -t ${frontendTag} .
+                            docker tag ${frontendTag} ${FRONTEND_IMAGE}:latest-${params.ENVIRONMENT}
+                        """
+                        env.FRONTEND_TAG = frontendTag
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            parallel {
+                stage('Backend Tests') {
+                    steps {
+                        dir('schemes-python-backend') {
+                            sh '''
+                                docker run --rm \
+                                    --env-file ../${ENV_FILE} \
+                                    -v $(pwd):/app \
+                                    python:3.11-slim \
+                                    bash -c "pip install -r requirements.txt && python -m pytest tests/ -v --cov=app --cov-report=xml"
+                            '''
+                        }
+                    }
+                    post {
+                        always {
+                            junit 'schemes-python-backend/coverage.xml'
+                        }
+                    }
+                }
+
+                stage('Frontend Tests') {
+                    steps {
+                        dir('schemes-react-frontend') {
+                            sh '''
+                                npm install
+                                npm run test -- --coverage --watchAll=false
+                            '''
+                        }
+                    }
+                    post {
+                        always {
+                            publishCoverage adapters: [istanbulCoberturaAdapter('coverage/cobertura-coverage.xml')]
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Security Scan') {
+            steps {
+                parallel {
+                    stage('Backend Security Scan') {
+                        steps {
+                            sh """
+                                docker run --rm \
+                                    -v /var/run/docker.sock:/var/run/docker.sock \
+                                    -v \$(pwd):/src \
+                                    securecodebox/trivy:latest \
+                                    image --format json --output /src/trivy-backend-report.json ${env.BACKEND_TAG}
+                            """
+                        }
+                    }
+
+                    stage('Frontend Security Scan') {
+                        steps {
+                            sh """
+                                docker run --rm \
+                                    -v /var/run/docker.sock:/var/run/docker.sock \
+                                    -v \$(pwd):/src \
+                                    securecodebox/trivy:latest \
+                                    image --format json --output /src/trivy-frontend-report.json ${env.FRONTEND_TAG}
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'docker-registry-credentials', url: "https://${DOCKER_REGISTRY}"]) {
+                        sh """
+                            docker push ${env.BACKEND_TAG}
+                            docker push ${BACKEND_IMAGE}:latest-${params.ENVIRONMENT}
+                            docker push ${env.FRONTEND_TAG}
+                            docker push ${FRONTEND_IMAGE}:latest-${params.ENVIRONMENT}
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    def deployEnv = params.ENVIRONMENT
+
+                    if (deployEnv == 'prod') {
+                        timeout(time: 15, unit: 'MINUTES') {
+                            input message: 'Deploy to Production?', ok: 'Deploy'
+                        }
+                    }
+
+                    // Deploy using docker-compose
+                    sh """
+                        export COMPOSE_PROJECT_NAME=schemes-${deployEnv}
+                        docker-compose -f docker-compose.yml -f ${env.DOCKER_COMPOSE_FILE} up -d
+                    """
+
+                    // Run database migrations
+                    sh """
+                        docker-compose -f docker-compose.yml -f ${env.DOCKER_COMPOSE_FILE} exec -T backend alembic upgrade head
+                    """
+                }
+            }
+        }
+
+        stage('Post-Deployment Tests') {
+            steps {
+                script {
+                    // Wait for services to be ready
+                    sh '''
+                        timeout 300 bash -c 'until curl -f http://localhost:8000/health; do sleep 5; done'
+                        timeout 300 bash -c 'until curl -f http://localhost:3000; do sleep 5; done'
+                    '''
+
+                    // Run integration tests
+                    sh '''
+                        docker run --rm --network schemes-${ENVIRONMENT}_schemes-network \
+                            -e API_URL=http://backend:8000 \
+                            postman/newman:latest run postman_collection.json \
+                            --environment postman_environment_${ENVIRONMENT}.json
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up Docker images
+            sh """
+                docker rmi ${env.BACKEND_TAG} || true
+                docker rmi ${env.FRONTEND_TAG} || true
+                docker system prune -f
+            """
+
+            // Archive artifacts
+            archiveArtifacts artifacts: '**/*.xml, **/*.json', allowEmptyArchive: true
+        }
+
+        success {
+            script {
+                def color = params.ENVIRONMENT == 'prod' ? 'danger' : 'good'
+                slackSend(
+                    color: color,
+                    message: "✅ Deployment to ${params.ENVIRONMENT} successful!\nBuild: ${BUILD_NUMBER}\nBranch: ${params.BRANCH_NAME}"
+                )
+            }
+        }
+
+        failure {
+            script {
+                slackSend(
+                    color: 'danger',
+                    message: "❌ Deployment to ${params.ENVIRONMENT} failed!\nBuild: ${BUILD_NUMBER}\nBranch: ${params.BRANCH_NAME}"
+                )
+            }
+        }
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
+
+    triggers {
+        // Trigger on GitLab webhook
+        gitlab(
+            triggerOnPush: true,
+            triggerOnMergeRequest: true,
+            branchFilterType: 'All',
+            secretToken: env.GITLAB_WEBHOOK_SECRET
+        )
+    }
+}

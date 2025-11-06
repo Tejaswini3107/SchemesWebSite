@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - DATABASE_URL=postgresql://schemes_user:schemes_password@db:5432/schemes_db
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - REDIS_URL=redis://redis:6379
+
+  frontend:
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_ENVIRONMENT=development

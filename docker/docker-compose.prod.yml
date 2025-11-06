@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - DATABASE_URL=postgresql://schemes_user:schemes_password@db:5432/schemes_prod_db
+      - SECRET_KEY=${PROD_SECRET_KEY}
+      - REDIS_URL=redis://redis:6379
+      - SMTP_SERVER=${PROD_SMTP_SERVER}
+      - SMTP_USERNAME=${PROD_SMTP_USERNAME}
+      - SMTP_PASSWORD=${PROD_SMTP_PASSWORD}
+      - TWILIO_ACCOUNT_SID=${PROD_TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${PROD_TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${PROD_TWILIO_PHONE_NUMBER}
+
+  db:
+    environment:
+      POSTGRES_DB: schemes_prod_db
+
+  frontend:
+    environment:
+      - REACT_APP_API_URL=https://api.schemes.com
+      - REACT_APP_ENVIRONMENT=production
+
+  nginx:
+    profiles:
+      - production

@@ -1,0 +1,142 @@
+stages:
+  - build
+  - test
+  - security
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+# Build stage
+build_backend:
+  stage: build
+  script:
+    - cd schemes-python-backend
+    - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  only:
+    - release/dev
+    - qa
+    - uat
+    - main
+
+build_frontend:
+  stage: build
+  script:
+    - cd schemes-react-frontend
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  only:
+    - release/dev
+    - qa
+    - uat
+    - main
+
+# Test stage
+test_backend:
+  stage: test
+  script:
+    - cd schemes-python-backend
+    - docker run --rm -v $(pwd):/app python:3.11-slim bash -c "pip install -r requirements.txt && python -m pytest tests/ -v"
+  only:
+    - release/dev
+    - qa
+    - uat
+    - main
+
+test_frontend:
+  stage: test
+  script:
+    - cd schemes-react-frontend
+    - npm install
+    - npm run test -- --watchAll=false
+  only:
+    - release/dev
+    - qa
+    - uat
+    - main
+
+# Security scan
+security_scan:
+  stage: security
+  script:
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock
+      securecodebox/trivy:latest image --format json --output trivy-report.json
+      $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock
+      securecodebox/trivy:latest image --format json --output trivy-frontend-report.json
+      $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  artifacts:
+    reports:
+      sast: trivy-report.json
+    expire_in: 1 week
+  only:
+    - release/dev
+    - qa
+    - uat
+    - main
+
+# Deploy to different environments
+deploy_dev:
+  stage: deploy
+  script:
+    - export COMPOSE_PROJECT_NAME=schemes-dev
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.dev.yml up -d
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.dev.yml exec -T backend alembic upgrade head
+  environment:
+    name: development
+    url: http://dev.schemes.com
+  only:
+    - release/dev
+
+deploy_qa:
+  stage: deploy
+  script:
+    - export COMPOSE_PROJECT_NAME=schemes-qa
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.qa.yml up -d
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.qa.yml exec -T backend alembic upgrade head
+  environment:
+    name: qa
+    url: http://qa.schemes.com
+  only:
+    - qa
+  when: manual
+
+deploy_uat:
+  stage: deploy
+  script:
+    - export COMPOSE_PROJECT_NAME=schemes-uat
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.uat.yml up -d
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.uat.yml exec -T backend alembic upgrade head
+  environment:
+    name: uat
+    url: http://uat.schemes.com
+  only:
+    - uat
+  when: manual
+
+deploy_prod:
+  stage: deploy
+  script:
+    - export COMPOSE_PROJECT_NAME=schemes-prod
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.prod.yml --profile production up -d
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.prod.yml exec -T backend alembic upgrade head
+  environment:
+    name: production
+    url: https://schemes.com
+  only:
+    - main
+  when: manual
+
+# Rollback job (manual)
+rollback:
+  stage: deploy
+  script:
+    - echo "Rolling back to previous version"
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.${CI_COMMIT_REF_NAME}.yml down
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.${CI_COMMIT_REF_NAME}.yml pull
+    - docker-compose -f docker-compose.yml -f docker/docker-compose.${CI_COMMIT_REF_NAME}.yml up -d
+  when: manual
+  except:
+    - main

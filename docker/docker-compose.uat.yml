@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - ENVIRONMENT=uat
+      - DEBUG=false
+      - DATABASE_URL=postgresql://schemes_user:schemes_password@db:5432/schemes_uat_db
+      - SECRET_KEY=${UAT_SECRET_KEY}
+      - REDIS_URL=redis://redis:6379
+      - SMTP_SERVER=${UAT_SMTP_SERVER}
+      - SMTP_USERNAME=${UAT_SMTP_USERNAME}
+      - SMTP_PASSWORD=${UAT_SMTP_PASSWORD}
+
+  db:
+    environment:
+      POSTGRES_DB: schemes_uat_db
+
+  frontend:
+    environment:
+      - REACT_APP_API_URL=https://uat-api.schemes.com
+      - REACT_APP_ENVIRONMENT=uat
