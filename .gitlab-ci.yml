@@ -103,6 +103,9 @@ security_scan:
 # Deploy to different environments
 deploy_dev:
   stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
   script:
     - export COMPOSE_PROJECT_NAME=schemes-dev
     - docker load -i schemes-python-backend/backend-image.tar
@@ -119,6 +122,9 @@ deploy_dev:
 
 deploy_qa:
   stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
   script:
     - export COMPOSE_PROJECT_NAME=schemes-qa
     - docker load -i schemes-python-backend/backend-image.tar
@@ -136,6 +142,9 @@ deploy_qa:
 
 deploy_uat:
   stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
   script:
     - export COMPOSE_PROJECT_NAME=schemes-uat
     - docker load -i schemes-python-backend/backend-image.tar
@@ -153,6 +162,9 @@ deploy_uat:
 
 deploy_prod:
   stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
   script:
     - export COMPOSE_PROJECT_NAME=schemes-prod
     - docker load -i schemes-python-backend/backend-image.tar
