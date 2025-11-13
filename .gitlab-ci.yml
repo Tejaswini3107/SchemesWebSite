@@ -54,8 +54,8 @@ test_backend:
   script:
     - cd schemes-python-backend
     - pip install -r requirements.txt
-    - python -c "import app; print('Backend imports successfully')"
-    - python main.py --help || echo "App structure test passed"
+    - pip install pytest fastapi[test]
+    - python -m pytest tests/ -v
   only:
     - release/dev
     - qa
