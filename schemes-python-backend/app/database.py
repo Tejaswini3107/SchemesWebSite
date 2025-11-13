@@ -12,7 +12,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./schemes.db")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+from app.models import Base  # Import Base from app.models
 
 def get_db():
     db = SessionLocal()
@@ -23,5 +23,4 @@ def get_db():
 
 def create_tables():
     """Create all tables in the database"""
-    from app.models import Base
     Base.metadata.create_all(bind=engine)
